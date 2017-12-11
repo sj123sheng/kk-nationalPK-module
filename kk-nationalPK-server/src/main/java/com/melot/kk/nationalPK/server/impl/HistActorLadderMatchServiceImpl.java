@@ -6,7 +6,6 @@ import com.melot.kk.nationalPK.api.domain.DO.HistActorLadderMatchDO;
 import com.melot.kk.nationalPK.api.service.ConfLadderMatchService;
 import com.melot.kk.nationalPK.api.service.HistActorLadderMatchService;
 import com.melot.kk.nationalPK.server.config.ConfigService;
-import com.melot.kk.nationalPK.server.util.SendMsgUtil;
 import com.melot.kkcore.user.service.KkUserService;
 import com.melot.kktv.base.Result;
 import com.melot.module.kkrpc.annotation.RpcConsumer;
@@ -49,9 +48,6 @@ public class HistActorLadderMatchServiceImpl implements HistActorLadderMatchServ
 
     @RpcConsumer(version="1.0.1")
     private ActivityMedalService activityMedalService;
-
-    @Autowired
-    private SendMsgUtil sendMsgUtil;
 
     private static String SEPARATOR = ",";
 

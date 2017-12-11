@@ -43,9 +43,9 @@ public class ConfLadderMatchDO implements Serializable {
     private Date endTime;
 
     /**
-     * 赛季是否正在进行中 true-正在进行中 false-不在进行中(未开始或者已结束)
+     * 赛季状态 0-未开始 1-正在进行中 2-已结束
      */
-    private boolean ongoing;
+    private Integer status;
 
     public Integer getSeasonId() {
         return seasonId;
@@ -103,12 +103,11 @@ public class ConfLadderMatchDO implements Serializable {
         this.endTime = endTime;
     }
 
-    public boolean isOngoing() {
-        return ongoing;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setOngoing(boolean ongoing) {
-        this.ongoing = ongoing;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
-
 }

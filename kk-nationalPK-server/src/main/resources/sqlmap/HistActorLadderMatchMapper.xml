@@ -14,21 +14,17 @@
     <result column="pk_id" jdbcType="INTEGER" property="pkId" />
   </resultMap>
   
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    SELECT o_tagcode FROM p_hist_actor_ladder_match_delete(#{ladderMatchRecordId,jdbcType=INTEGER})
-  </delete>
-  
-  <insert id="insert" parameterType="com.melot.kk.nationalPK.server.model.HistActorLadderMatch">
+  <select id="insert" parameterType="com.melot.kk.nationalPK.server.model.HistActorLadderMatch" resultType="java.lang.Integer">
     SELECT o_ladderMatchRecordId FROM p_hist_actor_ladder_match_insert(
         #{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER}, #{opponentActorId,jdbcType=INTEGER}, 
       #{ladderMatchResult,jdbcType=INTEGER}, #{receiveScore,jdbcType=INTEGER}, #{receiveShowMoney,jdbcType=BIGINT}, 
       #{opponentReceiveShowMoney,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{pkId,jdbcType=INTEGER})
-  </insert>
+  </select>
   
-  <update id="updateByPrimaryKey" parameterType="com.melot.kk.nationalPK.server.model.HistActorLadderMatch">
+  <select id="updateByPrimaryKey" parameterType="com.melot.kk.nationalPK.server.model.HistActorLadderMatch" resultType="java.lang.String">
     SELECT o_tagcode FROM p_hist_actor_ladder_match_update(#{ladderMatchRecordId,jdbcType=INTEGER},#{actorId,jdbcType=INTEGER},#{seasonId,jdbcType=INTEGER},#{opponentActorId,jdbcType=INTEGER},#{ladderMatchResult,jdbcType=INTEGER},#{receiveScore,jdbcType=INTEGER},#{receiveShowMoney,jdbcType=BIGINT},#{opponentReceiveShowMoney,jdbcType=BIGINT},#{createTime,jdbcType=TIMESTAMP},#{pkId,jdbcType=INTEGER})
-  </update>
+  </select>
   
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select ladder_match_record_id, actor_id, season_id, opponent_actor_id, ladder_match_result, 

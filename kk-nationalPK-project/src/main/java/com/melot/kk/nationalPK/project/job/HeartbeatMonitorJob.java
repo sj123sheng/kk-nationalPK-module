@@ -3,6 +3,7 @@ package com.melot.kk.nationalPK.project.job;
 import com.google.gson.Gson;
 import com.melot.common.melot_utils.TenantContext;
 import com.melot.job.api.SimpleJob;
+import com.melot.kk.nationalPK.api.domain.DO.ConfLadderMatchDO;
 import com.melot.kk.nationalPK.api.service.ConfLadderMatchService;
 import com.melot.kkcore.actor.service.ActorService;
 import com.melot.kktv.base.CommonStateCode;
@@ -38,7 +39,7 @@ public class HeartbeatMonitorJob implements SimpleJob {
     public void execute() {
 
         int i = 0;
-        Result<List<LadderMatchDO>> result = null;//ladderMatchService.getRecentRecordsByRoomId(16864055);
+        Result<List<ConfLadderMatchDO>> result = null;//ladderMatchService.getRecentRecordsByRoomId(16864055);
 
         if(result.getCode().equals(CommonStateCode.SUCCESS) && result.getData() != null) {
             i++;

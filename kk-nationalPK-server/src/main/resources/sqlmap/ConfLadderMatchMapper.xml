@@ -12,24 +12,34 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    SELECT o_tagcode FROM p_conf_ladder_match_delete(#{seasonId,jdbcType=INTEGER})
-  </delete>
-  
-  <insert id="insert" parameterType="com.melot.kk.nationalPK.server.model.ConfLadderMatch">
+  <select id="insert" parameterType="com.melot.kk.nationalPK.server.model.ConfLadderMatch" resultType="java.lang.Integer">
     SELECT o_seasonId FROM p_conf_ladder_match_insert(
         #{seasonName,jdbcType=VARCHAR}, #{bonusPoolMultiple,jdbcType=INTEGER}, #{giveReward,jdbcType=INTEGER}, 
       #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
-  </insert>
+  </select>
   
-  <update id="updateByPrimaryKey" parameterType="com.melot.kk.nationalPK.server.model.ConfLadderMatch">
+  <select id="updateByPrimaryKey" parameterType="com.melot.kk.nationalPK.server.model.ConfLadderMatch" resultType="java.lang.String">
     SELECT o_tagcode FROM p_conf_ladder_match_update(#{seasonId,jdbcType=INTEGER},#{seasonName,jdbcType=VARCHAR},#{bonusPoolMultiple,jdbcType=INTEGER},#{giveReward,jdbcType=INTEGER},#{startTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
-  </update>
+  </select>
   
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select season_id, season_name, bonus_pool_multiple, give_reward, start_time, end_time, 
     create_time, update_time
     from p_conf_ladder_match_get(#{seasonId,jdbcType=INTEGER})
   </select>
+
+    <select id="getListCount" resultType="java.lang.Integer">
+        SELECT count(*) FROM conf_ladder_match
+    </select>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT season_id, season_name, bonus_pool_multiple, give_reward, start_time,
+            end_time, create_time, update_time
+        FROM conf_ladder_match
+        order by season_id desc
+        limit #{limit,jdbcType=INTEGER}
+        offset #{offset,jdbcType=INTEGER}
+    </select>
+
 </mapper>
