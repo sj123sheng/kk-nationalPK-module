@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.melot.module</groupId>
+    <artifactId>kk-nationalPK-module</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>kk-nationalPK-module</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compile.source>1.7</maven.compile.source>
+        <maven.compile.target>1.7</maven.compile.target>
+    </properties>
+
+    <modules>
+        <module>kk-nationalPK-api</module>
+        <module>kk-nationalPK-server</module>
+        <module>kk-nationalPK-project</module>
+    </modules>
+
+</project>

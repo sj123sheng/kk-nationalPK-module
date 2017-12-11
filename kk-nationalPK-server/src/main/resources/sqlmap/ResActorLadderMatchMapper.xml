@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.melot.kk.nationalPK.server.dao.ResActorLadderMatchMapper">
+  <resultMap id="BaseResultMap" type="com.melot.kk.nationalPK.server.model.ResActorLadderMatch">
+    <id column="actor_id" jdbcType="INTEGER" property="actorId" />
+    <id column="season_id" jdbcType="INTEGER" property="seasonId" />
+    <result column="ladder_match_integral" jdbcType="INTEGER" property="ladderMatchIntegral" />
+    <result column="ladder_match_time" jdbcType="INTEGER" property="ladderMatchTime" />
+    <result column="winning_rate" jdbcType="INTEGER" property="winningRate" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="show_money_give_reward" jdbcType="INTEGER" property="showMoneyGiveReward" />
+    <result column="medal_give_reward" jdbcType="INTEGER" property="medalGiveReward" />
+    <result column="show_money_count" jdbcType="BIGINT" property="showMoneyCount" />
+    <result column="medal_id" jdbcType="INTEGER" property="medalId" />
+  </resultMap>
+  
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    SELECT o_tagcode FROM p_res_actor_ladder_match_delete(#{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER})
+  </delete>
+  
+  <insert id="insert" parameterType="com.melot.kk.nationalPK.server.model.ResActorLadderMatch">
+    SELECT o_tagcode FROM p_res_actor_ladder_match_insert(
+        #{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER}, #{ladderMatchIntegral,jdbcType=INTEGER}, 
+      #{ladderMatchTime,jdbcType=INTEGER}, #{winningRate,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{showMoneyGiveReward,jdbcType=INTEGER}, #{medalGiveReward,jdbcType=INTEGER}, 
+      #{showMoneyCount,jdbcType=BIGINT}, #{medalId,jdbcType=INTEGER})
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.melot.kk.nationalPK.server.model.ResActorLadderMatch">
+    SELECT o_tagcode FROM p_res_actor_ladder_match_update(#{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER},#{ladderMatchIntegral,jdbcType=INTEGER},#{ladderMatchTime,jdbcType=INTEGER},#{winningRate,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{showMoneyGiveReward,jdbcType=INTEGER},#{medalGiveReward,jdbcType=INTEGER},#{showMoneyCount,jdbcType=BIGINT},#{medalId,jdbcType=INTEGER})
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select actor_id, season_id, ladder_match_integral, ladder_match_time, winning_rate, 
+    create_time, update_time, show_money_give_reward, medal_give_reward, show_money_count, 
+    medal_id
+    from p_res_actor_ladder_match_get(#{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER})
+  </select>
+</mapper>

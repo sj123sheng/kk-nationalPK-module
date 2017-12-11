@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config mode="client" enabled="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema" xsi:noNamespaceSchemaLocation="config.xsd">
+    <domain id="kk-demo-server" ip="10.0.0.2" enabled="true" max-message-size="1000"/>
+</config>

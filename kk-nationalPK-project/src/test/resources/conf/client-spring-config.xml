@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:kkrpc="http://www.kktv1.com/schema/kkrpc"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                        http://www.kktv1.com/schema/kkrpc http://www.kktv1.com/schema/kkrpc/kkrpc.xsd">
+
+    <!-- 配置应用名称、应用版本、负责人等服务治理信息 -->
+    <kkrpc:application id="myapp" appname="clientDemo" author="kk" appversion="1.0.0" />
+
+    <kkrpc:registry id="myregistry" address="zk1.kktv2.com:2181,zk2.kktv2.com:2181,zk3.kktv2.com:2181" connecttimeout="10000" sessiontimeout="30000" />
+
+    <kkrpc:consumer timeout="80000" retries="3" loadbalance="roundrobin" filter="monitor" cluster="failover" heartbeat="60000" heartbeattimeout="180000" version="1.0.0"
+        connections="1" application="myapp" registry="myregistry" group="*" connecttimeout="3000" />
+
+    <kkrpc:reference id="resourceNewService" interface="com.melot.kk.module.doll.service.DollService" version="1.0.2" />
+</beans>
