@@ -8,6 +8,7 @@ import com.melot.kk.nationalPK.api.service.ConfLadderMatchService;
 import com.melot.kk.nationalPK.server.constant.NationalPKResultCode;
 import com.melot.kk.nationalPK.server.dao.ConfLadderMatchMapper;
 import com.melot.kk.nationalPK.server.model.ConfLadderMatch;
+import com.melot.kk.nationalPK.server.redis.NationalPKRelationSource;
 import com.melot.kktv.base.CommonStateCode;
 import com.melot.kktv.base.Result;
 import com.melot.kktv.util.BeanMapper;
@@ -42,6 +43,9 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
 
     @Autowired
     private ConfLadderMatchMapper confLadderMatchMapper;
+
+    @Autowired
+    private NationalPKRelationSource nationalPKRelationSource;
 
     @Override
     public Result<Boolean> addConfLadderMatch(String seasonName, Date startTime, Date endTime, int bonusPoolMultiple) {
@@ -119,8 +123,7 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
 
         if(confLadderMatches != null) {
             for (ConfLadderMatch confLadderMatch : confLadderMatches) {
-                ConfLadderMatchDO confLadderMatchDO = BeanMapper.map(confLadderMatch, ConfLadderMatchDO.class);
-                setStatus(confLadderMatchDO);
+                ConfLadderMatchDO confLadderMatchDO = switchToConfLadderMatchDO(confLadderMatch);
                 confLadderMatchDOS.add(confLadderMatchDO);
             }
         }
@@ -129,7 +132,7 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
         confLadderMatchPageDO.setTotalCount(totalCount);
         confLadderMatchPageDO.setConfLadderMatchDOS(confLadderMatchDOS);
 
-        return new Result(CommonStateCode.SUCCESS,"调用成功", confLadderMatchPageDO);
+        return new Result(CommonStateCode.SUCCESS,"获取赛季配置列表成功", confLadderMatchPageDO);
     }
 
     @Override
@@ -139,23 +142,70 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
 
         ConfLadderMatchDO confLadderMatchDO = null;
         if(confLadderMatch != null) {
-            confLadderMatchDO = BeanMapper.map(confLadderMatch, ConfLadderMatchDO.class);
-            setStatus(confLadderMatchDO);
+            confLadderMatchDO = switchToConfLadderMatchDO(confLadderMatch);
         }
-        return new Result(CommonStateCode.SUCCESS, "调用成功", confLadderMatchDO);
+        return new Result(CommonStateCode.SUCCESS, "根据赛季id获取赛季配置信息成功", confLadderMatchDO);
     }
 
     @Override
-    public Result<ConfLadderMatchDO> getCurrentConfLadderMatch() {
+    public Result<ConfLadderMatchDO> getCurrentSeasonConf() {
+
+        ConfLadderMatchDO confLadderMatchDO;
+        Integer currentSeasonId = nationalPKRelationSource.getCurrentSeasonId();
+
+        // 如果当前赛季id不为空
+        if(currentSeasonId != null) {
+
+            ConfLadderMatch confLadderMatch = confLadderMatchMapper.selectByPrimaryKey(currentSeasonId);
+            confLadderMatchDO = switchToConfLadderMatchDO(confLadderMatch);
+
+            Long currentBonusPool = nationalPKRelationSource.getCurrentBonusPool();
+            confLadderMatchDO.setBonusPool(currentBonusPool);
+        }else {
+            return new Result(CommonStateCode.FAIL, "获取当前赛季配置信息失败");
+        }
+        return new Result(CommonStateCode.SUCCESS, "获取当前赛季配置信息成功", confLadderMatchDO);
+    }
+
+    @Override
+    public Result<Boolean> setCurrentSeasonConf() {
+
+        List<ConfLadderMatch> confLadderMatches = confLadderMatchMapper.getList(2, 0);
+        if(confLadderMatches != null && confLadderMatches.size() > 0) {
+
+            int size = confLadderMatches.size();
+
+            if(size == 1) {
+                ConfLadderMatch confLadderMatch = confLadderMatches.get(0);
+                ConfLadderMatchDO confLadderMatchDO = switchToConfLadderMatchDO(confLadderMatch);
+                int status = confLadderMatchDO.getStatus();
+
+                if(status == LadderMatchStatusEnum.ONGOING || status == LadderMatchStatusEnum.OVER) {
+                    int currentSeasonId = confLadderMatchDO.getSeasonId();
+                    nationalPKRelationSource.setCurrentSeason(currentSeasonId, 0);
+                }
+            }else {
+
+            }
+        }
         return null;
     }
 
-    private void setStatus(ConfLadderMatchDO confLadderMatchDO) {
+    private ConfLadderMatchDO switchToConfLadderMatchDO(ConfLadderMatch confLadderMatch) {
+
+        ConfLadderMatchDO confLadderMatchDO = BeanMapper.map(confLadderMatch, ConfLadderMatchDO.class);
+        setStatusAndRemainingTime(confLadderMatchDO);
+        return confLadderMatchDO;
+    }
+
+    // 设置赛季的状态和赛季结束剩余时间(单位：秒)
+    private void setStatusAndRemainingTime(ConfLadderMatchDO confLadderMatchDO) {
 
         long nowTime = System.currentTimeMillis();
         long startTime = confLadderMatchDO.getStartTime().getTime();
         long endTime = confLadderMatchDO.getEndTime().getTime();
         int status = LadderMatchStatusEnum.NOT_BEGINNING;
+        long remainingTime = (endTime - nowTime) / 1000;
 
         if(nowTime >= startTime && nowTime <= endTime) {
             status = LadderMatchStatusEnum.ONGOING;
@@ -163,9 +213,11 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
 
         if(nowTime > endTime) {
             status = LadderMatchStatusEnum.OVER;
+            remainingTime = -1;
         }
 
         confLadderMatchDO.setStatus(status);
+        confLadderMatchDO.setRemainingTime(remainingTime);
     }
 
 }

@@ -49,6 +49,11 @@ public interface ConfLadderMatchService {
     /**
      * 获取当前赛季配置信息(指正在进行的赛季或者已经结束但是下个赛季还没开始的赛季)
      */
-    Result<ConfLadderMatchDO> getCurrentConfLadderMatch();
+    Result<ConfLadderMatchDO> getCurrentSeasonConf();
+
+    /**
+     * 设置当前赛季配置信息(指正在进行的赛季或者已经结束但是下个赛季还没开始的赛季)
+     */
+    Result<Boolean> setCurrentSeasonConf();
 
 }

@@ -13,19 +13,17 @@ public class NationalPKRelationSource {
 
 	private static final int EXPIRE_TIME = 7 * 24 * 3600;
 
-	private static final String DOLL_MACHINE_SUFFIX = "_doll_machine";
+	// 天梯赛当前赛季key
+	private static final String CURRENT_SEASON_KEY = "current_season_key";
 
-    private static final String DOLL_MACHINE_STATUS = "doll_machine_status";
+    // 当前赛季id
+    private static final String CURRENT_SEASON_ID = "current_season_id";
 
-    private static final String DOLL_MACHINE_USERID = "doll_machine_userId";
+    // 当前赛季奖金池秀币总数量
+    private static final String CURRENT_BONUS_POOL = "current_bonus_pool";
 
-    private static final String DOLL_MACHINE_START_GAME_TIME = "doll_machine_start_game_time";
-
-    private static final String CATCH_DOLL_RECORD_ID = "catch_doll_record_id";
-
-    private static final String RECENT_HEARTBEAT_STATUS_SUFFIX = "_recent_heartbeat_status";
-
-    private static final String START_GAME_SUFFIX = "_start_game";
+    // 开始发放奖励key后缀
+    private static final String START_GIVE_REWARD_SUFFIX = "_start_give_reward";
 
 	@Autowired
 	@Qualifier("nationalPKdata")
@@ -47,103 +45,51 @@ public class NationalPKRelationSource {
 		}
 	}
 
-	private static String getDollMachineKey(int roomId) {
-	    return roomId + DOLL_MACHINE_SUFFIX;
-    }
+	public Integer getCurrentSeasonId() {
 
-	public Integer getDollMachineStatus(int roomId) {
-	    String key = getDollMachineKey(roomId);
-        String statusStr = jedisHashMap.hget(key, DOLL_MACHINE_STATUS);
-        Integer status = null;
-        if(StringUtils.isNotEmpty(statusStr)) {
-            status = Integer.parseInt(statusStr);
+        String currentSeasonIdStr = jedisHashMap.hget(CURRENT_SEASON_KEY, CURRENT_SEASON_ID);
+        Integer currentSeasonId = null;
+        if(StringUtils.isNotEmpty(currentSeasonIdStr)) {
+            currentSeasonId = Integer.parseInt(currentSeasonIdStr);
         }
-        return status;
+        return currentSeasonId;
 	}
 
-    public Integer getDollMachineUserId(int roomId) {
-        String key = getDollMachineKey(roomId);
-        String userIdStr = jedisHashMap.hget(key, DOLL_MACHINE_USERID);
-        Integer userId = null;
-        if(StringUtils.isNotEmpty(userIdStr)) {
-            userId = Integer.parseInt(userIdStr);
+    public Long getCurrentBonusPool() {
+
+        String currentBonusPoolStr = jedisHashMap.hget(CURRENT_SEASON_KEY, CURRENT_BONUS_POOL);
+        Long currentBonusPool = null;
+        if(StringUtils.isNotEmpty(currentBonusPoolStr)) {
+            currentBonusPool = Long.parseLong(currentBonusPoolStr);
         }
-        return userId;
+        return currentBonusPool;
     }
 
-    public Long getDollMachineStartGameTime(int roomId) {
-        String key = getDollMachineKey(roomId);
-        String startGameTimeStr = jedisHashMap.hget(key, DOLL_MACHINE_START_GAME_TIME);
-        Long startGameTime = null;
-        if(StringUtils.isNotEmpty(startGameTimeStr)) {
-            startGameTime = Long.parseLong(startGameTimeStr);
-        }
-        return startGameTime;
+    public void setCurrentSeason(int currentSeasonId, long currentBonusPool) {
+
+        jedisHashMap.hset(CURRENT_SEASON_KEY, CURRENT_SEASON_ID , String.valueOf(currentSeasonId));
+        jedisHashMap.hset(CURRENT_SEASON_KEY, CURRENT_BONUS_POOL , String.valueOf(currentBonusPool));
+        jedisProxy.expire(CURRENT_SEASON_KEY, EXPIRE_TIME);
     }
 
-    public Integer getCatchDollRecordId(int roomId) {
-        String key = getDollMachineKey(roomId);
-        String catchDollRecordIdStr = jedisHashMap.hget(key, CATCH_DOLL_RECORD_ID);
-        Integer catchDollRecordId = null;
-        if(StringUtils.isNotEmpty(catchDollRecordIdStr)) {
-            catchDollRecordId = Integer.parseInt(catchDollRecordIdStr);
-        }
-        return catchDollRecordId;
-    }
+    // 该主播是否已经开始发放奖励 防止多线程同一时刻并发执行发放奖励程序导致一个主播发放多次情况
+    // true-已经在开始发放奖励(当前线程检测到true 不能再去发放奖励)
+    // false-还没开始发放奖励(当前线程检测到false 可以去发放奖励)
+    public Boolean startGiveReward(int actorId) {
 
-    public void setRedisDollMachine(int roomId, int dollMachineStatus, int userId, int catchDollRecordId) {
-        String key = getDollMachineKey(roomId);
-        jedisHashMap.hset(key, DOLL_MACHINE_STATUS , dollMachineStatus + "");
-        jedisHashMap.hset(key, DOLL_MACHINE_USERID , userId + "");
-        jedisHashMap.hset(key, DOLL_MACHINE_START_GAME_TIME , System.currentTimeMillis() + "");
-        jedisHashMap.hset(key, CATCH_DOLL_RECORD_ID , catchDollRecordId + "");
-        jedisProxy.expire(key, EXPIRE_TIME);
-    }
+        String startGiveRewardKey = getStartGiveRewardKey(actorId);
 
-    public long setDollMachineStatus(int roomId, int dollMachineStatus) {
-        String key = getDollMachineKey(roomId);
-        long count = jedisHashMap.hset(key, DOLL_MACHINE_STATUS , dollMachineStatus + "");
-        jedisProxy.expire(key, EXPIRE_TIME);
-        return count;
-    }
+        long num = jedisProxy.STRINGS.incrBy(startGiveRewardKey, 1);
 
-    public Boolean existsStartGame(int roomId) {
-        String key = getStartGameKey(roomId);
-        long num = jedisProxy.STRINGS.incrBy(key, 1);
-        jedisProxy.KEYS.expire(key, 5);
+        jedisProxy.KEYS.expire(startGiveRewardKey, 60);
         if(num > 1) {
             return true;
         }
         return false;
     }
 
-    private static String getStartGameKey(int roomId) {
-        return roomId + START_GAME_SUFFIX;
-    }
-
-    public void setRecentHeartbeatStatus(int dollMachineId, int cameraId, int pushFlowStatus) {
-        String key = getRecentHeartbeatTimeKey(dollMachineId, cameraId);
-        jedisProxy.STRINGS.setEx(key , 70, pushFlowStatus + "");
-    }
-
-    public Integer getRecentHeartbeatStatus(int dollMachineId, int cameraId) {
-        String key = getRecentHeartbeatTimeKey(dollMachineId, cameraId);
-        String recentHeartbeatStatusStr = jedisProxy.STRINGS.get(key);
-        Integer recentHeartbeatStatus = null;
-        if(StringUtils.isNotEmpty(recentHeartbeatStatusStr)) {
-            recentHeartbeatStatus = Integer.parseInt(recentHeartbeatStatusStr);
-        }
-        return recentHeartbeatStatus;
-    }
-
-    public Boolean existsRecentHeartbeatStatus(int dollMachineId, int cameraId) {
-        String key = getRecentHeartbeatTimeKey(dollMachineId, cameraId);
-        return jedisProxy.KEYS.exists(key);
-    }
-
-
-    private static String getRecentHeartbeatTimeKey(int dollMachineId, int cameraId) {
-        return dollMachineId + "_" + cameraId + RECENT_HEARTBEAT_STATUS_SUFFIX;
+    private static String getStartGiveRewardKey(int actorId) {
+        return actorId + START_GIVE_REWARD_SUFFIX;
     }
 
 }

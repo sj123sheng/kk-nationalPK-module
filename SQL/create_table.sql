@@ -30,13 +30,18 @@ CREATE SEQUENCE seq_conf_ladder_match
 
 CREATE TABLE res_actor_ladder_match
 (
-  actor_id              INTEGER NOT NULL,
-  season_id             INTEGER NOT NULL,
-  ladder_match_integral INTEGER,
-  ladder_match_time     INTEGER,
-  winning_rate          INTEGER,
-  create_time           TIMESTAMP,
-  update_time           TIMESTAMP,
+  actor_id               INTEGER NOT NULL,
+  season_id              INTEGER NOT NULL,
+  ladder_match_integral  INTEGER,
+  ladder_match_time      INTEGER,
+  winning_rate           INTEGER,
+  show_money_give_reward INTEGER DEFAULT 0,
+  medal_give_reward      INTEGER DEFAULT 0,
+  show_money_count       BIGINT,
+  medal_id               INTEGER,
+  receive_show_money     BIGINT,
+  create_time            TIMESTAMP,
+  update_time            TIMESTAMP,
   CONSTRAINT res_actor_ladder_match_actor_id_season_id_pk
   PRIMARY KEY (actor_id, season_id)
 );
@@ -46,23 +51,28 @@ COMMENT ON COLUMN res_actor_ladder_match.season_id IS '赛季id';
 COMMENT ON COLUMN res_actor_ladder_match.ladder_match_integral IS '天梯赛积分';
 COMMENT ON COLUMN res_actor_ladder_match.ladder_match_time IS '天梯赛场次';
 COMMENT ON COLUMN res_actor_ladder_match.winning_rate IS '天梯赛胜率';
+COMMENT ON COLUMN res_actor_ladder_match.show_money_give_reward IS '秀币是否已发放';
+COMMENT ON COLUMN res_actor_ladder_match.medal_give_reward IS '勋章是否已发放';
+COMMENT ON COLUMN res_actor_ladder_match.show_money_count IS '发放的秀币数量';
+COMMENT ON COLUMN res_actor_ladder_match.medal_id IS '发放的勋章id';
+COMMENT ON COLUMN res_actor_ladder_match.receive_show_money IS '获得礼物对应的秀币总数量';
 COMMENT ON COLUMN res_actor_ladder_match.create_time IS '创建时间';
 COMMENT ON COLUMN res_actor_ladder_match.update_time IS '更新时间';
 
 CREATE TABLE hist_actor_ladder_match
 (
-  ladder_match_record_id          INTEGER NOT NULL
+  ladder_match_record_id      INTEGER NOT NULL
     CONSTRAINT hist_actor_ladder_match_pkey
     PRIMARY KEY,
-  actor_id                        INTEGER,
-  season_id                       INTEGER,
-  opponent_actor_id               INTEGER,
-  ladder_match_result             INTEGER,
-  receive_score                   INTEGER,
-  receive_show_money              BIGINT,
-  opponent_receive_show_money     BIGINT,
-  create_time                     TIMESTAMP,
-  pk_id                           INTEGER
+  actor_id                    INTEGER,
+  season_id                   INTEGER,
+  opponent_actor_id           INTEGER,
+  ladder_match_result         INTEGER,
+  receive_score               INTEGER,
+  receive_show_money          BIGINT,
+  opponent_receive_show_money BIGINT,
+  create_time                 TIMESTAMP,
+  pk_id                       INTEGER
 );
 COMMENT ON TABLE hist_actor_ladder_match IS '主播天梯赛历史记录';
 COMMENT ON COLUMN hist_actor_ladder_match.ladder_match_record_id IS '主播天梯赛历史记录id';

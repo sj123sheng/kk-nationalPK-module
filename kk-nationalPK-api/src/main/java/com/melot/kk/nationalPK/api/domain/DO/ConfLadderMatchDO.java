@@ -47,6 +47,11 @@ public class ConfLadderMatchDO implements Serializable {
      */
     private Integer status;
 
+    /**
+     * 赛季结束剩余时间 (单位：秒) 当前赛季结束,下一赛季还未开始,返回-1
+     */
+    private Long remainingTime;
+
     public Integer getSeasonId() {
         return seasonId;
     }
@@ -109,5 +114,13 @@ public class ConfLadderMatchDO implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Long getRemainingTime() {
+        return remainingTime;
+    }
+
+    public void setRemainingTime(Long remainingTime) {
+        this.remainingTime = remainingTime;
     }
 }
