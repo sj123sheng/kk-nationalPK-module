@@ -91,11 +91,6 @@
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
-                <!--<excludes>
-                    <exclude>disconf.properties</exclude>
-                    <exclude>log4j.properties</exclude>
-                    <exclude>META-INF/**</exclude>
-                </excludes>-->
             </resource>
         </resources>
         <plugins>
@@ -191,20 +186,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.melot</groupId>
-            <artifactId>melot-mq-spring-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.melot.module</groupId>
             <artifactId>kk-nationalPK-api</artifactId>
             <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.melot.module</groupId>
-            <artifactId>kkcore-actor-api</artifactId>
-            <version>1.0.8</version>
         </dependency>
 
     </dependencies>

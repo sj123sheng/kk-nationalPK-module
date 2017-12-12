@@ -7,6 +7,7 @@ import com.melot.kk.nationalPK.api.domain.DO.ConfLadderMatchPageDO;
 import com.melot.kk.nationalPK.api.service.ConfLadderMatchService;
 import com.melot.kk.nationalPK.server.constant.NationalPKResultCode;
 import com.melot.kk.nationalPK.server.dao.ConfLadderMatchMapper;
+import com.melot.kk.nationalPK.server.dao.ResActorLadderMatchMapper;
 import com.melot.kk.nationalPK.server.model.ConfLadderMatch;
 import com.melot.kk.nationalPK.server.redis.NationalPKRelationSource;
 import com.melot.kktv.base.CommonStateCode;
@@ -43,6 +44,9 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
 
     @Autowired
     private ConfLadderMatchMapper confLadderMatchMapper;
+
+    @Autowired
+    private ResActorLadderMatchMapper resActorLadderMatchMapper;
 
     @Autowired
     private NationalPKRelationSource nationalPKRelationSource;
@@ -170,25 +174,17 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
     @Override
     public Result<Boolean> setCurrentSeasonConf() {
 
-        List<ConfLadderMatch> confLadderMatches = confLadderMatchMapper.getList(2, 0);
-        if(confLadderMatches != null && confLadderMatches.size() > 0) {
+        ConfLadderMatch confLadderMatch = confLadderMatchMapper.getOngoingSeason(DateUtils.getCurrentDate());
 
-            int size = confLadderMatches.size();
+        if(confLadderMatch != null) {
 
-            if(size == 1) {
-                ConfLadderMatch confLadderMatch = confLadderMatches.get(0);
-                ConfLadderMatchDO confLadderMatchDO = switchToConfLadderMatchDO(confLadderMatch);
-                int status = confLadderMatchDO.getStatus();
+            int seasonId = confLadderMatch.getSeasonId();
+            long bonusPool = resActorLadderMatchMapper.getBonusPoolShowMoneyCount(seasonId);
+            int status = switchToConfLadderMatchDO(confLadderMatch).getStatus();
 
-                if(status == LadderMatchStatusEnum.ONGOING || status == LadderMatchStatusEnum.OVER) {
-                    int currentSeasonId = confLadderMatchDO.getSeasonId();
-                    nationalPKRelationSource.setCurrentSeason(currentSeasonId, 0);
-                }
-            }else {
-
-            }
+            nationalPKRelationSource.setCurrentSeason(seasonId, bonusPool, status);
         }
-        return null;
+        return new Result(CommonStateCode.SUCCESS, "设置当前赛季配置信息成功", true);
     }
 
     private ConfLadderMatchDO switchToConfLadderMatchDO(ConfLadderMatch confLadderMatch) {

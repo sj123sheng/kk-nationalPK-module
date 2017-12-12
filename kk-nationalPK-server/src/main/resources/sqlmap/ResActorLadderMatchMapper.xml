@@ -6,6 +6,7 @@
     <id column="season_id" jdbcType="INTEGER" property="seasonId" />
     <result column="ladder_match_integral" jdbcType="INTEGER" property="ladderMatchIntegral" />
     <result column="ladder_match_time" jdbcType="INTEGER" property="ladderMatchTime" />
+    <result column="winning_time" jdbcType="INTEGER" property="winningTime" />
     <result column="winning_rate" jdbcType="INTEGER" property="winningRate" />
     <result column="show_money_give_reward" jdbcType="INTEGER" property="showMoneyGiveReward" />
     <result column="medal_give_reward" jdbcType="INTEGER" property="medalGiveReward" />
@@ -15,23 +16,31 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
-  
+
   <select id="insert" parameterType="com.melot.kk.nationalPK.server.model.ResActorLadderMatch" resultType="java.lang.String">
     SELECT o_tagcode FROM p_res_actor_ladder_match_insert(
         #{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER}, #{ladderMatchIntegral,jdbcType=INTEGER}, 
-      #{ladderMatchTime,jdbcType=INTEGER}, #{winningRate,jdbcType=INTEGER}, #{showMoneyGiveReward,jdbcType=INTEGER}, 
-      #{medalGiveReward,jdbcType=INTEGER}, #{showMoneyCount,jdbcType=BIGINT}, #{medalId,jdbcType=INTEGER}, 
-      #{receiveShowMoney,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      #{ladderMatchTime,jdbcType=INTEGER}, #{winningTime,jdbcType=INTEGER}, #{winningRate,jdbcType=INTEGER}, 
+      #{showMoneyGiveReward,jdbcType=INTEGER}, #{medalGiveReward,jdbcType=INTEGER}, #{showMoneyCount,jdbcType=BIGINT}, 
+      #{medalId,jdbcType=INTEGER}, #{receiveShowMoney,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </select>
   
   <select id="updateByPrimaryKey" parameterType="com.melot.kk.nationalPK.server.model.ResActorLadderMatch" resultType="java.lang.String">
-    SELECT o_tagcode FROM p_res_actor_ladder_match_update(#{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER},#{ladderMatchIntegral,jdbcType=INTEGER},#{ladderMatchTime,jdbcType=INTEGER},#{winningRate,jdbcType=INTEGER},#{showMoneyGiveReward,jdbcType=INTEGER},#{medalGiveReward,jdbcType=INTEGER},#{showMoneyCount,jdbcType=BIGINT},#{medalId,jdbcType=INTEGER},#{receiveShowMoney,jdbcType=BIGINT},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
+    SELECT o_tagcode FROM p_res_actor_ladder_match_update(#{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER},#{ladderMatchIntegral,jdbcType=INTEGER},#{ladderMatchTime,jdbcType=INTEGER},#{winningTime,jdbcType=INTEGER},#{winningRate,jdbcType=INTEGER},#{showMoneyGiveReward,jdbcType=INTEGER},#{medalGiveReward,jdbcType=INTEGER},#{showMoneyCount,jdbcType=BIGINT},#{medalId,jdbcType=INTEGER},#{receiveShowMoney,jdbcType=BIGINT},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
   </select>
   
   <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
-    select actor_id, season_id, ladder_match_integral, ladder_match_time, winning_rate, 
-    show_money_give_reward, medal_give_reward, show_money_count, medal_id, receive_show_money, 
-    create_time, update_time
+    select actor_id, season_id, ladder_match_integral, ladder_match_time, winning_time, 
+    winning_rate, show_money_give_reward, medal_give_reward, show_money_count, medal_id, 
+    receive_show_money, create_time, update_time
     from p_res_actor_ladder_match_get(#{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER})
   </select>
+
+    <select id="getBonusPoolShowMoneyCount" parameterType="java.lang.Integer"  resultType="java.lang.Long">
+        select coalesce(sum(receive_show_money), 0)
+        from res_actor_ladder_match
+        WHERE season_id = #{seasonId,jdbcType=INTEGER}
+    </select>
+    
 </mapper>

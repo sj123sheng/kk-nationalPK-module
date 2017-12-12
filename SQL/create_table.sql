@@ -34,6 +34,7 @@ CREATE TABLE res_actor_ladder_match
   season_id              INTEGER NOT NULL,
   ladder_match_integral  INTEGER,
   ladder_match_time      INTEGER,
+  winning_time           INTEGER,
   winning_rate           INTEGER,
   show_money_give_reward INTEGER DEFAULT 0,
   medal_give_reward      INTEGER DEFAULT 0,
@@ -48,8 +49,9 @@ CREATE TABLE res_actor_ladder_match
 COMMENT ON TABLE res_actor_ladder_match IS '主播天梯赛';
 COMMENT ON COLUMN res_actor_ladder_match.actor_id IS '主播id';
 COMMENT ON COLUMN res_actor_ladder_match.season_id IS '赛季id';
-COMMENT ON COLUMN res_actor_ladder_match.ladder_match_integral IS '天梯赛积分';
-COMMENT ON COLUMN res_actor_ladder_match.ladder_match_time IS '天梯赛场次';
+COMMENT ON COLUMN res_actor_ladder_match.ladder_match_integral IS '天梯赛总积分';
+COMMENT ON COLUMN res_actor_ladder_match.ladder_match_time IS '天梯赛总场次';
+COMMENT ON COLUMN res_actor_ladder_match.winning_time IS '天梯赛获胜场次';
 COMMENT ON COLUMN res_actor_ladder_match.winning_rate IS '天梯赛胜率';
 COMMENT ON COLUMN res_actor_ladder_match.show_money_give_reward IS '秀币是否已发放';
 COMMENT ON COLUMN res_actor_ladder_match.medal_give_reward IS '勋章是否已发放';

@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
 @Component
 public class NationalPKRelationSource {
 
-	private static final int EXPIRE_TIME = 7 * 24 * 3600;
+	private static final int EXPIRE_TIME = 3 * 31 * 24 * 3600;
 
 	// 天梯赛当前赛季key
 	private static final String CURRENT_SEASON_KEY = "current_season_key";
@@ -21,6 +21,9 @@ public class NationalPKRelationSource {
 
     // 当前赛季奖金池秀币总数量
     private static final String CURRENT_BONUS_POOL = "current_bonus_pool";
+
+    // 当前赛季状态
+    private static final String CURRENT_SEASON_STATUS = "current_season_status";
 
     // 开始发放奖励key后缀
     private static final String START_GIVE_REWARD_SUFFIX = "_start_give_reward";
@@ -65,10 +68,21 @@ public class NationalPKRelationSource {
         return currentBonusPool;
     }
 
-    public void setCurrentSeason(int currentSeasonId, long currentBonusPool) {
+    public Integer getCurrentSeasonStatus() {
+
+        String currentSeasonStatusStr = jedisHashMap.hget(CURRENT_SEASON_KEY, CURRENT_SEASON_STATUS);
+        Integer currentSeasonStatus = null;
+        if(StringUtils.isNotEmpty(currentSeasonStatusStr)) {
+            currentSeasonStatus = Integer.parseInt(currentSeasonStatusStr);
+        }
+        return currentSeasonStatus;
+    }
+
+    public void setCurrentSeason(int currentSeasonId, long currentBonusPool, int status) {
 
         jedisHashMap.hset(CURRENT_SEASON_KEY, CURRENT_SEASON_ID , String.valueOf(currentSeasonId));
         jedisHashMap.hset(CURRENT_SEASON_KEY, CURRENT_BONUS_POOL , String.valueOf(currentBonusPool));
+        jedisHashMap.hset(CURRENT_SEASON_KEY, CURRENT_SEASON_STATUS , String.valueOf(status));
         jedisProxy.expire(CURRENT_SEASON_KEY, EXPIRE_TIME);
     }
 

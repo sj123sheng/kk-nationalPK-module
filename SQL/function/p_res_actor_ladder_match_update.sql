@@ -4,6 +4,7 @@ CREATE OR REPLACE FUNCTION p_res_actor_ladder_match_update
   IN  i_seasonId  INTEGER,
   IN  i_ladderMatchIntegral  INTEGER,
   IN  i_ladderMatchTime  INTEGER,
+  IN  i_winningTime  INTEGER,
   IN  i_winningRate  INTEGER,
   IN  i_showMoneyGiveReward  INTEGER,
   IN  i_medalGiveReward  INTEGER,
@@ -20,6 +21,7 @@ BEGIN
   UPDATE res_actor_ladder_match
   SET ladder_match_integral = coalesce(i_ladderMatchIntegral, ladder_match_integral),
     ladder_match_time = coalesce(i_ladderMatchTime, ladder_match_time),
+    winning_time = coalesce(i_winningTime, winning_time),
     winning_rate = coalesce(i_winningRate, winning_rate),
     show_money_give_reward = coalesce(i_showMoneyGiveReward, show_money_give_reward),
     medal_give_reward = coalesce(i_medalGiveReward, medal_give_reward),

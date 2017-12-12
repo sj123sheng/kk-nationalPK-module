@@ -42,4 +42,16 @@
         offset #{offset,jdbcType=INTEGER}
     </select>
 
+    <select id="getOngoingSeason" parameterType="java.util.Date" resultMap="BaseResultMap">
+        <![CDATA[
+            SELECT season_id, season_name, bonus_pool_multiple, give_reward, start_time,
+              end_time, create_time, update_time
+            FROM conf_ladder_match
+            WHERE start_time <= #{currentDate,jdbcType=TIMESTAMP} and end_time >= #{currentDate,jdbcType=TIMESTAMP}
+            order by season_id desc
+            limit 1
+            offset 0
+        ]]>
+    </select>
+
 </mapper>

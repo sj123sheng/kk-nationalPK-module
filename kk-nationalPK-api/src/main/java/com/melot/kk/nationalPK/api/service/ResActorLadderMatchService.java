@@ -30,4 +30,9 @@ public interface ResActorLadderMatchService {
      */
     Result<List<ResActorLadderMatchDO>> getLadderChart(int pageIndex, int countPerPage);
 
+    /**
+     * 赛季结束给主播发放奖励
+     */
+    Result<Boolean> giveReward();
+
 }

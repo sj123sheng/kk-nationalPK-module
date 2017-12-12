@@ -12,6 +12,8 @@ public class ResActorLadderMatch implements Serializable {
 
     private Integer ladderMatchTime;
 
+    private Integer winningTime;
+
     private Integer winningRate;
 
     private Integer showMoneyGiveReward;
@@ -60,6 +62,14 @@ public class ResActorLadderMatch implements Serializable {
 
     public void setLadderMatchTime(Integer ladderMatchTime) {
         this.ladderMatchTime = ladderMatchTime;
+    }
+
+    public Integer getWinningTime() {
+        return winningTime;
+    }
+
+    public void setWinningTime(Integer winningTime) {
+        this.winningTime = winningTime;
     }
 
     public Integer getWinningRate() {
@@ -142,6 +152,7 @@ public class ResActorLadderMatch implements Serializable {
             && (this.getSeasonId() == null ? other.getSeasonId() == null : this.getSeasonId().equals(other.getSeasonId()))
             && (this.getLadderMatchIntegral() == null ? other.getLadderMatchIntegral() == null : this.getLadderMatchIntegral().equals(other.getLadderMatchIntegral()))
             && (this.getLadderMatchTime() == null ? other.getLadderMatchTime() == null : this.getLadderMatchTime().equals(other.getLadderMatchTime()))
+            && (this.getWinningTime() == null ? other.getWinningTime() == null : this.getWinningTime().equals(other.getWinningTime()))
             && (this.getWinningRate() == null ? other.getWinningRate() == null : this.getWinningRate().equals(other.getWinningRate()))
             && (this.getShowMoneyGiveReward() == null ? other.getShowMoneyGiveReward() == null : this.getShowMoneyGiveReward().equals(other.getShowMoneyGiveReward()))
             && (this.getMedalGiveReward() == null ? other.getMedalGiveReward() == null : this.getMedalGiveReward().equals(other.getMedalGiveReward()))
@@ -160,6 +171,7 @@ public class ResActorLadderMatch implements Serializable {
         result = prime * result + ((getSeasonId() == null) ? 0 : getSeasonId().hashCode());
         result = prime * result + ((getLadderMatchIntegral() == null) ? 0 : getLadderMatchIntegral().hashCode());
         result = prime * result + ((getLadderMatchTime() == null) ? 0 : getLadderMatchTime().hashCode());
+        result = prime * result + ((getWinningTime() == null) ? 0 : getWinningTime().hashCode());
         result = prime * result + ((getWinningRate() == null) ? 0 : getWinningRate().hashCode());
         result = prime * result + ((getShowMoneyGiveReward() == null) ? 0 : getShowMoneyGiveReward().hashCode());
         result = prime * result + ((getMedalGiveReward() == null) ? 0 : getMedalGiveReward().hashCode());
@@ -181,6 +193,7 @@ public class ResActorLadderMatch implements Serializable {
         sb.append(", seasonId=").append(seasonId);
         sb.append(", ladderMatchIntegral=").append(ladderMatchIntegral);
         sb.append(", ladderMatchTime=").append(ladderMatchTime);
+        sb.append(", winningTime=").append(winningTime);
         sb.append(", winningRate=").append(winningRate);
         sb.append(", showMoneyGiveReward=").append(showMoneyGiveReward);
         sb.append(", medalGiveReward=").append(medalGiveReward);
