@@ -7,30 +7,31 @@
     <result column="ladder_match_integral" jdbcType="INTEGER" property="ladderMatchIntegral" />
     <result column="ladder_match_time" jdbcType="INTEGER" property="ladderMatchTime" />
     <result column="winning_rate" jdbcType="INTEGER" property="winningRate" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="show_money_give_reward" jdbcType="INTEGER" property="showMoneyGiveReward" />
     <result column="medal_give_reward" jdbcType="INTEGER" property="medalGiveReward" />
     <result column="show_money_count" jdbcType="BIGINT" property="showMoneyCount" />
     <result column="medal_id" jdbcType="INTEGER" property="medalId" />
+    <result column="receive_show_money" jdbcType="BIGINT" property="receiveShowMoney" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   
   <select id="insert" parameterType="com.melot.kk.nationalPK.server.model.ResActorLadderMatch" resultType="java.lang.String">
     SELECT o_tagcode FROM p_res_actor_ladder_match_insert(
         #{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER}, #{ladderMatchIntegral,jdbcType=INTEGER}, 
-      #{ladderMatchTime,jdbcType=INTEGER}, #{winningRate,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{showMoneyGiveReward,jdbcType=INTEGER}, #{medalGiveReward,jdbcType=INTEGER}, 
-      #{showMoneyCount,jdbcType=BIGINT}, #{medalId,jdbcType=INTEGER})
+      #{ladderMatchTime,jdbcType=INTEGER}, #{winningRate,jdbcType=INTEGER}, #{showMoneyGiveReward,jdbcType=INTEGER}, 
+      #{medalGiveReward,jdbcType=INTEGER}, #{showMoneyCount,jdbcType=BIGINT}, #{medalId,jdbcType=INTEGER}, 
+      #{receiveShowMoney,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </select>
   
   <select id="updateByPrimaryKey" parameterType="com.melot.kk.nationalPK.server.model.ResActorLadderMatch" resultType="java.lang.String">
-    SELECT o_tagcode FROM p_res_actor_ladder_match_update(#{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER},#{ladderMatchIntegral,jdbcType=INTEGER},#{ladderMatchTime,jdbcType=INTEGER},#{winningRate,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{showMoneyGiveReward,jdbcType=INTEGER},#{medalGiveReward,jdbcType=INTEGER},#{showMoneyCount,jdbcType=BIGINT},#{medalId,jdbcType=INTEGER})
+    SELECT o_tagcode FROM p_res_actor_ladder_match_update(#{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER},#{ladderMatchIntegral,jdbcType=INTEGER},#{ladderMatchTime,jdbcType=INTEGER},#{winningRate,jdbcType=INTEGER},#{showMoneyGiveReward,jdbcType=INTEGER},#{medalGiveReward,jdbcType=INTEGER},#{showMoneyCount,jdbcType=BIGINT},#{medalId,jdbcType=INTEGER},#{receiveShowMoney,jdbcType=BIGINT},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
   </select>
   
   <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
     select actor_id, season_id, ladder_match_integral, ladder_match_time, winning_rate, 
-    create_time, update_time, show_money_give_reward, medal_give_reward, show_money_count, 
-    medal_id
+    show_money_give_reward, medal_give_reward, show_money_count, medal_id, receive_show_money, 
+    create_time, update_time
     from p_res_actor_ladder_match_get(#{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER})
   </select>
 </mapper>
