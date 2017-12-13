@@ -5,6 +5,7 @@ CREATE OR REPLACE FUNCTION p_hist_actor_ladder_match_insert
   IN  i_opponentActorId  INTEGER,
   IN  i_ladderMatchResult  INTEGER,
   IN  i_receiveScore  INTEGER,
+  IN  i_opponentReceiveScore  INTEGER,
   IN  i_receiveShowMoney  BIGINT,
   IN  i_opponentReceiveShowMoney  BIGINT,
   IN  i_createTime  TIMESTAMP,
@@ -16,13 +17,13 @@ $$
 BEGIN
   o_ladderMatchRecordId := nextval('kkcx.seq_hist_actor_ladder_match');
   INSERT INTO hist_actor_ladder_match (ladder_match_record_id, actor_id, season_id, opponent_actor_id, 
-    ladder_match_result, receive_score, receive_show_money, 
-    opponent_receive_show_money, create_time, 
-    pk_id)
+    ladder_match_result, receive_score, opponent_receive_score, 
+    receive_show_money, opponent_receive_show_money, 
+    create_time, pk_id)
   VALUES (o_ladderMatchRecordId, i_actorId, i_seasonId, i_opponentActorId, 
-    i_ladderMatchResult, i_receiveScore, i_receiveShowMoney, 
-    i_opponentReceiveShowMoney, i_createTime, 
-    i_pkId);
+    i_ladderMatchResult, i_receiveScore, i_opponentReceiveScore, 
+    i_receiveShowMoney, i_opponentReceiveShowMoney, 
+    i_createTime, i_pkId);
 EXCEPTION WHEN OTHERS THEN
   o_ladderMatchRecordId := -1;
 END;

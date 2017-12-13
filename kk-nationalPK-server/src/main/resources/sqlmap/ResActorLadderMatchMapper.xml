@@ -42,5 +42,35 @@
         from res_actor_ladder_match
         WHERE season_id = #{seasonId,jdbcType=INTEGER}
     </select>
+
+    <select id="getActorRanking" parameterType="map" resultType="java.lang.Integer">
+        SELECT
+            b.rank_number
+        FROM res_actor_ladder_match a
+            JOIN
+            (SELECT
+                 actor_id,
+                 row_number()
+                 OVER (
+                     ORDER BY ladder_match_integral DESC, winning_rate DESC, ladder_match_time DESC ) AS rank_number
+             FROM res_actor_ladder_match
+             WHERE season_id = 11
+             LIMIT 99
+             OFFSET 0) b ON a.actor_id = b.actor_id
+        WHERE a.actor_id = #{actorId,jdbcType=INTEGER}
+        AND a.season_id = #{seasonId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getLadderChart" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+            actor_id, season_id, ladder_match_integral, ladder_match_time, winning_time,
+            winning_rate, show_money_give_reward, medal_give_reward, show_money_count, medal_id,
+            receive_show_money, create_time, update_time
+        FROM res_actor_ladder_match
+        WHERE season_id = #{seasonId,jdbcType=INTEGER}
+        ORDER BY ladder_match_integral DESC, winning_rate DESC, ladder_match_time DESC
+        limit #{limit,jdbcType=INTEGER}
+        offset #{offset,jdbcType=INTEGER}
+    </select>
     
 </mapper>

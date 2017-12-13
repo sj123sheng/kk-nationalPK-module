@@ -71,6 +71,7 @@ CREATE TABLE hist_actor_ladder_match
   opponent_actor_id           INTEGER,
   ladder_match_result         INTEGER,
   receive_score               INTEGER,
+  opponent_receive_score      INTEGER,
   receive_show_money          BIGINT,
   opponent_receive_show_money BIGINT,
   create_time                 TIMESTAMP,
@@ -83,6 +84,7 @@ COMMENT ON COLUMN hist_actor_ladder_match.season_id IS '赛季id';
 COMMENT ON COLUMN hist_actor_ladder_match.opponent_actor_id IS '对手主播id';
 COMMENT ON COLUMN hist_actor_ladder_match.ladder_match_result IS '天梯赛比赛结果 1-胜利 2-失败 3-平局';
 COMMENT ON COLUMN hist_actor_ladder_match.receive_score IS '获得分值';
+COMMENT ON COLUMN hist_actor_ladder_match.opponent_receive_score IS '对手获得分值';
 COMMENT ON COLUMN hist_actor_ladder_match.receive_show_money IS '获得秀币总数';
 COMMENT ON COLUMN hist_actor_ladder_match.opponent_receive_show_money IS '对手获得秀币总数';
 COMMENT ON COLUMN hist_actor_ladder_match.create_time IS '创建时间';

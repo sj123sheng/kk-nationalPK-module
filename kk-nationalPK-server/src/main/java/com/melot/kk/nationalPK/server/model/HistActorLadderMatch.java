@@ -16,6 +16,8 @@ public class HistActorLadderMatch implements Serializable {
 
     private Integer receiveScore;
 
+    private Integer opponentReceiveScore;
+
     private Long receiveShowMoney;
 
     private Long opponentReceiveShowMoney;
@@ -74,6 +76,14 @@ public class HistActorLadderMatch implements Serializable {
         this.receiveScore = receiveScore;
     }
 
+    public Integer getOpponentReceiveScore() {
+        return opponentReceiveScore;
+    }
+
+    public void setOpponentReceiveScore(Integer opponentReceiveScore) {
+        this.opponentReceiveScore = opponentReceiveScore;
+    }
+
     public Long getReceiveShowMoney() {
         return receiveShowMoney;
     }
@@ -124,6 +134,7 @@ public class HistActorLadderMatch implements Serializable {
             && (this.getOpponentActorId() == null ? other.getOpponentActorId() == null : this.getOpponentActorId().equals(other.getOpponentActorId()))
             && (this.getLadderMatchResult() == null ? other.getLadderMatchResult() == null : this.getLadderMatchResult().equals(other.getLadderMatchResult()))
             && (this.getReceiveScore() == null ? other.getReceiveScore() == null : this.getReceiveScore().equals(other.getReceiveScore()))
+            && (this.getOpponentReceiveScore() == null ? other.getOpponentReceiveScore() == null : this.getOpponentReceiveScore().equals(other.getOpponentReceiveScore()))
             && (this.getReceiveShowMoney() == null ? other.getReceiveShowMoney() == null : this.getReceiveShowMoney().equals(other.getReceiveShowMoney()))
             && (this.getOpponentReceiveShowMoney() == null ? other.getOpponentReceiveShowMoney() == null : this.getOpponentReceiveShowMoney().equals(other.getOpponentReceiveShowMoney()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
@@ -140,6 +151,7 @@ public class HistActorLadderMatch implements Serializable {
         result = prime * result + ((getOpponentActorId() == null) ? 0 : getOpponentActorId().hashCode());
         result = prime * result + ((getLadderMatchResult() == null) ? 0 : getLadderMatchResult().hashCode());
         result = prime * result + ((getReceiveScore() == null) ? 0 : getReceiveScore().hashCode());
+        result = prime * result + ((getOpponentReceiveScore() == null) ? 0 : getOpponentReceiveScore().hashCode());
         result = prime * result + ((getReceiveShowMoney() == null) ? 0 : getReceiveShowMoney().hashCode());
         result = prime * result + ((getOpponentReceiveShowMoney() == null) ? 0 : getOpponentReceiveShowMoney().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
@@ -159,6 +171,7 @@ public class HistActorLadderMatch implements Serializable {
         sb.append(", opponentActorId=").append(opponentActorId);
         sb.append(", ladderMatchResult=").append(ladderMatchResult);
         sb.append(", receiveScore=").append(receiveScore);
+        sb.append(", opponentReceiveScore=").append(opponentReceiveScore);
         sb.append(", receiveShowMoney=").append(receiveShowMoney);
         sb.append(", opponentReceiveShowMoney=").append(opponentReceiveShowMoney);
         sb.append(", createTime=").append(createTime);

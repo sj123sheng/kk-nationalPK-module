@@ -180,9 +180,8 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
 
             int seasonId = confLadderMatch.getSeasonId();
             long bonusPool = resActorLadderMatchMapper.getBonusPoolShowMoneyCount(seasonId);
-            int status = switchToConfLadderMatchDO(confLadderMatch).getStatus();
 
-            nationalPKRelationSource.setCurrentSeason(seasonId, bonusPool, status);
+            nationalPKRelationSource.setCurrentSeason(seasonId, bonusPool);
         }
         return new Result(CommonStateCode.SUCCESS, "设置当前赛季配置信息成功", true);
     }
