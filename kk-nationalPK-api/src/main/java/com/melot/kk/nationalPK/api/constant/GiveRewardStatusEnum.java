@@ -1,11 +1,11 @@
 package com.melot.kk.nationalPK.api.constant;
 
 /**
- * Description: LadderMatchStatusEnum 天梯赛赛季状态
+ * Description: GiveRewardStatusEnum 天梯赛赛季奖励是否发放状态
  *
  * @author:     shengjian
  * @version:    1.0
- * Filename:    LadderMatchStatusEnum.java
+ * Filename:    GiveRewardStatusEnum.java
  * Create at:   2017-12-07
  *
  * Copyright:   Copyright (c)2015
@@ -16,21 +16,16 @@ package com.melot.kk.nationalPK.api.constant;
  * ------------------------------------------------------------------
  * 2017-12-07      shengjian      1.0         1.0 Version
  */
-public class LadderMatchStatusEnum {
+public class GiveRewardStatusEnum {
 
     /**
-     * 未开始
+     * 未发放
      */
-    public static final int NOT_BEGINNING = 0;
+    public static final int NOT_GIVE_REWARD = 0;
 
     /**
-     * 进行中
+     * 已发放
      */
-    public static final int ONGOING = 1;
-
-    /**
-     * 已结束
-     */
-    public static final int OVER = 2;
+    public static final int ALREADY_GIVE_REWARD = 1;
 
 }

@@ -31,8 +31,9 @@ public interface ResActorLadderMatchService {
     Result<List<ResActorLadderMatchDO>> getLadderChart(int pageIndex, int countPerPage);
 
     /**
-     * 赛季结束给主播发放奖励
+     * 赛季结束给本赛季所有主播发放奖励
+     * @param seasonId 赛季id
      */
-    Result<Boolean> giveReward();
+    Result<Boolean> giveReward(int seasonId);
 
 }

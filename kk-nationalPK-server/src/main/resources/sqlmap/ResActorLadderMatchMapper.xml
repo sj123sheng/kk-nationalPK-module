@@ -61,7 +61,7 @@
         AND a.season_id = #{seasonId,jdbcType=INTEGER}
     </select>
 
-    <select id="getLadderChart" parameterType="map" resultMap="BaseResultMap">
+    <select id="getList" parameterType="map" resultMap="BaseResultMap">
         SELECT
             actor_id, season_id, ladder_match_integral, ladder_match_time, winning_time,
             winning_rate, show_money_give_reward, medal_give_reward, show_money_count, medal_id,
@@ -71,6 +71,21 @@
         ORDER BY ladder_match_integral DESC, winning_rate DESC, ladder_match_time DESC
         limit #{limit,jdbcType=INTEGER}
         offset #{offset,jdbcType=INTEGER}
+    </select>
+
+    <select id="getListCount" parameterType="map" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM res_actor_ladder_match
+        WHERE season_id = #{seasonId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getCountBySeasonIdAndGameDan" parameterType="map" resultType="java.lang.Integer">
+        SELECT
+          count(*)
+        FROM res_actor_ladder_match
+        WHERE season_id = #{seasonId,jdbcType=INTEGER}
+        and
     </select>
     
 </mapper>

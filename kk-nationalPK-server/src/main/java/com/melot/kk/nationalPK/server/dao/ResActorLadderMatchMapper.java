@@ -9,7 +9,7 @@ public interface ResActorLadderMatchMapper {
 
     String insert(ResActorLadderMatch record);
 
-    ResActorLadderMatch selectByPrimaryKey(@Param("actorId") Integer actorId, @Param("seasonId") Integer seasonId);
+    ResActorLadderMatch selectByPrimaryKey(@Param("actorId") int actorId, @Param("seasonId") int seasonId);
 
     String updateByPrimaryKey(ResActorLadderMatch record);
 
@@ -17,8 +17,12 @@ public interface ResActorLadderMatchMapper {
     Long getBonusPoolShowMoneyCount(int seasonId);
 
     // 获取主播排名 只查询排名前99名的主播 超过99名统一返回空
-    Integer getActorRanking(@Param("actorId") Integer actorId, @Param("seasonId") Integer seasonId);
+    Integer getActorRanking(@Param("actorId") int actorId, @Param("seasonId") int seasonId);
 
-    // 获取天梯赛排名(天梯榜)
-    List<ResActorLadderMatch> getLadderChart(@Param("seasonId") Integer seasonId, @Param("limit") Integer limit, @Param("offset") Integer offset);
+    // 获取天梯赛排名列表(天梯榜)
+    List<ResActorLadderMatch> getList(@Param("seasonId") int seasonId, @Param("limit") int limit, @Param("offset") int offset);
+
+    Integer getListCount(@Param("seasonId") int seasonId);
+
+    Integer getCountBySeasonIdAndGameDan(@Param("seasonId") int seasonId, @Param("gameDan") int gameDan);
 }

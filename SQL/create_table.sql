@@ -33,6 +33,7 @@ CREATE TABLE res_actor_ladder_match
   actor_id               INTEGER NOT NULL,
   season_id              INTEGER NOT NULL,
   ladder_match_integral  INTEGER,
+  game_dan               INTEGER,
   ladder_match_time      INTEGER,
   winning_time           INTEGER,
   winning_rate           INTEGER,
@@ -50,11 +51,12 @@ COMMENT ON TABLE res_actor_ladder_match IS '主播天梯赛';
 COMMENT ON COLUMN res_actor_ladder_match.actor_id IS '主播id';
 COMMENT ON COLUMN res_actor_ladder_match.season_id IS '赛季id';
 COMMENT ON COLUMN res_actor_ladder_match.ladder_match_integral IS '天梯赛总积分';
+COMMENT ON COLUMN res_actor_ladder_match.game_dan IS '天梯赛游戏段位';
 COMMENT ON COLUMN res_actor_ladder_match.ladder_match_time IS '天梯赛总场次';
 COMMENT ON COLUMN res_actor_ladder_match.winning_time IS '天梯赛获胜场次';
 COMMENT ON COLUMN res_actor_ladder_match.winning_rate IS '天梯赛胜率';
-COMMENT ON COLUMN res_actor_ladder_match.show_money_give_reward IS '秀币是否已发放';
-COMMENT ON COLUMN res_actor_ladder_match.medal_give_reward IS '勋章是否已发放';
+COMMENT ON COLUMN res_actor_ladder_match.show_money_give_reward IS '秀币是否已发放 0-未发放 1-已发放';
+COMMENT ON COLUMN res_actor_ladder_match.medal_give_reward IS '勋章是否已发放 0-未发放 1-已发放';
 COMMENT ON COLUMN res_actor_ladder_match.show_money_count IS '发放的秀币数量';
 COMMENT ON COLUMN res_actor_ladder_match.medal_id IS '发放的勋章id';
 COMMENT ON COLUMN res_actor_ladder_match.receive_show_money IS '获得礼物对应的秀币总数量';

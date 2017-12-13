@@ -10,6 +10,8 @@ public class ResActorLadderMatch implements Serializable {
 
     private Integer ladderMatchIntegral;
 
+    private Integer gameDan;
+
     private Integer ladderMatchTime;
 
     private Integer winningTime;
@@ -54,6 +56,14 @@ public class ResActorLadderMatch implements Serializable {
 
     public void setLadderMatchIntegral(Integer ladderMatchIntegral) {
         this.ladderMatchIntegral = ladderMatchIntegral;
+    }
+
+    public Integer getGameDan() {
+        return gameDan;
+    }
+
+    public void setGameDan(Integer gameDan) {
+        this.gameDan = gameDan;
     }
 
     public Integer getLadderMatchTime() {
@@ -151,6 +161,7 @@ public class ResActorLadderMatch implements Serializable {
         return (this.getActorId() == null ? other.getActorId() == null : this.getActorId().equals(other.getActorId()))
             && (this.getSeasonId() == null ? other.getSeasonId() == null : this.getSeasonId().equals(other.getSeasonId()))
             && (this.getLadderMatchIntegral() == null ? other.getLadderMatchIntegral() == null : this.getLadderMatchIntegral().equals(other.getLadderMatchIntegral()))
+            && (this.getGameDan() == null ? other.getGameDan() == null : this.getGameDan().equals(other.getGameDan()))
             && (this.getLadderMatchTime() == null ? other.getLadderMatchTime() == null : this.getLadderMatchTime().equals(other.getLadderMatchTime()))
             && (this.getWinningTime() == null ? other.getWinningTime() == null : this.getWinningTime().equals(other.getWinningTime()))
             && (this.getWinningRate() == null ? other.getWinningRate() == null : this.getWinningRate().equals(other.getWinningRate()))
@@ -170,6 +181,7 @@ public class ResActorLadderMatch implements Serializable {
         result = prime * result + ((getActorId() == null) ? 0 : getActorId().hashCode());
         result = prime * result + ((getSeasonId() == null) ? 0 : getSeasonId().hashCode());
         result = prime * result + ((getLadderMatchIntegral() == null) ? 0 : getLadderMatchIntegral().hashCode());
+        result = prime * result + ((getGameDan() == null) ? 0 : getGameDan().hashCode());
         result = prime * result + ((getLadderMatchTime() == null) ? 0 : getLadderMatchTime().hashCode());
         result = prime * result + ((getWinningTime() == null) ? 0 : getWinningTime().hashCode());
         result = prime * result + ((getWinningRate() == null) ? 0 : getWinningRate().hashCode());
@@ -192,6 +204,7 @@ public class ResActorLadderMatch implements Serializable {
         sb.append(", actorId=").append(actorId);
         sb.append(", seasonId=").append(seasonId);
         sb.append(", ladderMatchIntegral=").append(ladderMatchIntegral);
+        sb.append(", gameDan=").append(gameDan);
         sb.append(", ladderMatchTime=").append(ladderMatchTime);
         sb.append(", winningTime=").append(winningTime);
         sb.append(", winningRate=").append(winningRate);

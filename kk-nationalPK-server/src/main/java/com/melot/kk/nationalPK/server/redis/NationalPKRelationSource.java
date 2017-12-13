@@ -72,9 +72,11 @@ public class NationalPKRelationSource {
         jedisProxy.expire(CURRENT_SEASON_KEY, EXPIRE_TIME);
     }
 
-    // 该主播是否已经开始发放奖励 防止多线程同一时刻并发执行发放奖励程序导致一个主播发放多次情况
-    // true-已经在开始发放奖励(当前线程检测到true 不能再去发放奖励)
-    // false-还没开始发放奖励(当前线程检测到false 可以去发放奖励)
+    /**
+     * 该主播是否已经开始发放奖励 防止多线程同一时刻并发执行发放奖励程序导致一个主播发放多次情况
+     * true-已经在开始发放奖励(当前线程检测到true 不能再去发放奖励)
+     * false-还没开始发放奖励(当前线程检测到false 可以去发放奖励)
+     */
     public Boolean startGiveReward(int actorId) {
 
         String startGiveRewardKey = getStartGiveRewardKey(actorId);
