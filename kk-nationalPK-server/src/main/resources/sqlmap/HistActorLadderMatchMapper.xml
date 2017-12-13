@@ -8,6 +8,7 @@
     <result column="opponent_actor_id" jdbcType="INTEGER" property="opponentActorId" />
     <result column="ladder_match_result" jdbcType="INTEGER" property="ladderMatchResult" />
     <result column="receive_score" jdbcType="INTEGER" property="receiveScore" />
+    <result column="opponent_receive_score" jdbcType="INTEGER" property="opponentReceiveScore" />
     <result column="receive_show_money" jdbcType="BIGINT" property="receiveShowMoney" />
     <result column="opponent_receive_show_money" jdbcType="BIGINT" property="opponentReceiveShowMoney" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -17,18 +18,19 @@
   <select id="insert" parameterType="com.melot.kk.nationalPK.server.model.HistActorLadderMatch" resultType="java.lang.Integer">
     SELECT o_ladderMatchRecordId FROM p_hist_actor_ladder_match_insert(
         #{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER}, #{opponentActorId,jdbcType=INTEGER}, 
-      #{ladderMatchResult,jdbcType=INTEGER}, #{receiveScore,jdbcType=INTEGER}, #{receiveShowMoney,jdbcType=BIGINT}, 
-      #{opponentReceiveShowMoney,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{pkId,jdbcType=INTEGER})
+      #{ladderMatchResult,jdbcType=INTEGER}, #{receiveScore,jdbcType=INTEGER}, #{opponentReceiveScore,jdbcType=INTEGER}, 
+      #{receiveShowMoney,jdbcType=BIGINT}, #{opponentReceiveShowMoney,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{pkId,jdbcType=INTEGER})
   </select>
   
   <select id="updateByPrimaryKey" parameterType="com.melot.kk.nationalPK.server.model.HistActorLadderMatch" resultType="java.lang.String">
-    SELECT o_tagcode FROM p_hist_actor_ladder_match_update(#{ladderMatchRecordId,jdbcType=INTEGER},#{actorId,jdbcType=INTEGER},#{seasonId,jdbcType=INTEGER},#{opponentActorId,jdbcType=INTEGER},#{ladderMatchResult,jdbcType=INTEGER},#{receiveScore,jdbcType=INTEGER},#{receiveShowMoney,jdbcType=BIGINT},#{opponentReceiveShowMoney,jdbcType=BIGINT},#{createTime,jdbcType=TIMESTAMP},#{pkId,jdbcType=INTEGER})
+    SELECT o_tagcode FROM p_hist_actor_ladder_match_update(#{ladderMatchRecordId,jdbcType=INTEGER},#{actorId,jdbcType=INTEGER},#{seasonId,jdbcType=INTEGER},#{opponentActorId,jdbcType=INTEGER},#{ladderMatchResult,jdbcType=INTEGER},#{receiveScore,jdbcType=INTEGER},#{opponentReceiveScore,jdbcType=INTEGER},#{receiveShowMoney,jdbcType=BIGINT},#{opponentReceiveShowMoney,jdbcType=BIGINT},#{createTime,jdbcType=TIMESTAMP},#{pkId,jdbcType=INTEGER})
   </select>
   
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select ladder_match_record_id, actor_id, season_id, opponent_actor_id, ladder_match_result, 
-    receive_score, receive_show_money, opponent_receive_show_money, create_time, pk_id
+    receive_score, opponent_receive_score, receive_show_money, opponent_receive_show_money, 
+    create_time, pk_id
     from p_hist_actor_ladder_match_get(#{ladderMatchRecordId,jdbcType=INTEGER})
   </select>
 </mapper>
