@@ -36,6 +36,11 @@ public class HistActorLadderMatchDO implements Serializable {
     private Integer receiveScore;
 
     /**
+     * 对手获得分值
+     */
+    private Integer opponentReceiveScore;
+
+    /**
      * 获得秀币总数
      */
     private Long receiveShowMoney;
@@ -103,6 +108,14 @@ public class HistActorLadderMatchDO implements Serializable {
 
     public void setReceiveScore(Integer receiveScore) {
         this.receiveScore = receiveScore;
+    }
+
+    public Integer getOpponentReceiveScore() {
+        return opponentReceiveScore;
+    }
+
+    public void setOpponentReceiveScore(Integer opponentReceiveScore) {
+        this.opponentReceiveScore = opponentReceiveScore;
     }
 
     public Long getReceiveShowMoney() {

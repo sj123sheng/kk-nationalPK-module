@@ -1,36 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.melot.kk.nationalPK.server.dao.HistActorLadderMatchMapper">
-  <resultMap id="BaseResultMap" type="com.melot.kk.nationalPK.server.model.HistActorLadderMatch">
-    <id column="ladder_match_record_id" jdbcType="INTEGER" property="ladderMatchRecordId" />
-    <result column="actor_id" jdbcType="INTEGER" property="actorId" />
-    <result column="season_id" jdbcType="INTEGER" property="seasonId" />
-    <result column="opponent_actor_id" jdbcType="INTEGER" property="opponentActorId" />
-    <result column="ladder_match_result" jdbcType="INTEGER" property="ladderMatchResult" />
-    <result column="receive_score" jdbcType="INTEGER" property="receiveScore" />
-    <result column="opponent_receive_score" jdbcType="INTEGER" property="opponentReceiveScore" />
-    <result column="receive_show_money" jdbcType="BIGINT" property="receiveShowMoney" />
-    <result column="opponent_receive_show_money" jdbcType="BIGINT" property="opponentReceiveShowMoney" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="pk_id" jdbcType="INTEGER" property="pkId" />
-  </resultMap>
-  
-  <select id="insert" parameterType="com.melot.kk.nationalPK.server.model.HistActorLadderMatch" resultType="java.lang.Integer">
-    SELECT o_ladderMatchRecordId FROM p_hist_actor_ladder_match_insert(
-        #{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER}, #{opponentActorId,jdbcType=INTEGER}, 
-      #{ladderMatchResult,jdbcType=INTEGER}, #{receiveScore,jdbcType=INTEGER}, #{opponentReceiveScore,jdbcType=INTEGER}, 
-      #{receiveShowMoney,jdbcType=BIGINT}, #{opponentReceiveShowMoney,jdbcType=BIGINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{pkId,jdbcType=INTEGER})
-  </select>
-  
-  <select id="updateByPrimaryKey" parameterType="com.melot.kk.nationalPK.server.model.HistActorLadderMatch" resultType="java.lang.String">
-    SELECT o_tagcode FROM p_hist_actor_ladder_match_update(#{ladderMatchRecordId,jdbcType=INTEGER},#{actorId,jdbcType=INTEGER},#{seasonId,jdbcType=INTEGER},#{opponentActorId,jdbcType=INTEGER},#{ladderMatchResult,jdbcType=INTEGER},#{receiveScore,jdbcType=INTEGER},#{opponentReceiveScore,jdbcType=INTEGER},#{receiveShowMoney,jdbcType=BIGINT},#{opponentReceiveShowMoney,jdbcType=BIGINT},#{createTime,jdbcType=TIMESTAMP},#{pkId,jdbcType=INTEGER})
-  </select>
-  
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select ladder_match_record_id, actor_id, season_id, opponent_actor_id, ladder_match_result, 
-    receive_score, opponent_receive_score, receive_show_money, opponent_receive_show_money, 
-    create_time, pk_id
-    from p_hist_actor_ladder_match_get(#{ladderMatchRecordId,jdbcType=INTEGER})
-  </select>
+    <resultMap id="BaseResultMap" type="com.melot.kk.nationalPK.server.model.HistActorLadderMatch">
+        <id column="ladder_match_record_id" jdbcType="INTEGER" property="ladderMatchRecordId"/>
+        <result column="actor_id" jdbcType="INTEGER" property="actorId"/>
+        <result column="season_id" jdbcType="INTEGER" property="seasonId"/>
+        <result column="opponent_actor_id" jdbcType="INTEGER" property="opponentActorId"/>
+        <result column="ladder_match_result" jdbcType="INTEGER" property="ladderMatchResult"/>
+        <result column="receive_score" jdbcType="INTEGER" property="receiveScore"/>
+        <result column="opponent_receive_score" jdbcType="INTEGER" property="opponentReceiveScore"/>
+        <result column="receive_show_money" jdbcType="BIGINT" property="receiveShowMoney"/>
+        <result column="opponent_receive_show_money" jdbcType="BIGINT" property="opponentReceiveShowMoney"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="pk_id" jdbcType="INTEGER" property="pkId"/>
+    </resultMap>
+
+    <select id="insert" parameterType="com.melot.kk.nationalPK.server.model.HistActorLadderMatch"
+            resultType="java.lang.Integer">
+        SELECT o_ladderMatchRecordId
+        FROM p_hist_actor_ladder_match_insert(
+                #{actorId,jdbcType=INTEGER}, #{seasonId,jdbcType=INTEGER}, #{opponentActorId,jdbcType=INTEGER},
+                #{ladderMatchResult,jdbcType=INTEGER}, #{receiveScore,jdbcType=INTEGER},
+                #{opponentReceiveScore,jdbcType=INTEGER},
+                #{receiveShowMoney,jdbcType=BIGINT}, #{opponentReceiveShowMoney,jdbcType=BIGINT},
+                #{createTime,jdbcType=TIMESTAMP}, #{pkId,jdbcType=INTEGER})
+    </select>
+
+    <select id="updateByPrimaryKey" parameterType="com.melot.kk.nationalPK.server.model.HistActorLadderMatch"
+            resultType="java.lang.String">
+        SELECT o_tagcode
+        FROM p_hist_actor_ladder_match_update(#{ladderMatchRecordId,jdbcType=INTEGER}, #{actorId,jdbcType=INTEGER},
+                                              #{seasonId,jdbcType=INTEGER}, #{opponentActorId,jdbcType=INTEGER},
+                                              #{ladderMatchResult,jdbcType=INTEGER}, #{receiveScore,jdbcType=INTEGER},
+                                              #{opponentReceiveScore,jdbcType=INTEGER},
+                                              #{receiveShowMoney,jdbcType=BIGINT},
+                                              #{opponentReceiveShowMoney,jdbcType=BIGINT},
+                                              #{createTime,jdbcType=TIMESTAMP}, #{pkId,jdbcType=INTEGER})
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT
+            ladder_match_record_id,
+            actor_id,
+            season_id,
+            opponent_actor_id,
+            ladder_match_result,
+            receive_score,
+            opponent_receive_score,
+            receive_show_money,
+            opponent_receive_show_money,
+            create_time,
+            pk_id
+        FROM p_hist_actor_ladder_match_get(#{ladderMatchRecordId,jdbcType=INTEGER})
+    </select>
+
+    <select id="getRecentHistActorLadderMatchList" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+            ladder_match_record_id,
+            actor_id,
+            season_id,
+            opponent_actor_id,
+            ladder_match_result,
+            receive_score,
+            opponent_receive_score,
+            receive_show_money,
+            opponent_receive_show_money,
+            create_time,
+            pk_id
+        FROM hist_actor_ladder_match
+        WHERE season_id = #{seasonId,jdbcType=INTEGER}
+              AND actor_id = #{actorId,jdbcType=INTEGER}
+        ORDER BY create_time DESC
+        LIMIT 10
+        OFFSET 0
+    </select>
+
 </mapper>
