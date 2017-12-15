@@ -78,7 +78,7 @@
                  OVER (
                      ORDER BY ladder_match_integral DESC, winning_rate DESC, ladder_match_time DESC ) AS rank_number
              FROM res_actor_ladder_match
-             WHERE season_id = 11
+             WHERE season_id = #{seasonId,jdbcType=INTEGER}
              LIMIT 99
              OFFSET 0) b ON a.actor_id = b.actor_id
         WHERE a.actor_id = #{actorId,jdbcType=INTEGER}
