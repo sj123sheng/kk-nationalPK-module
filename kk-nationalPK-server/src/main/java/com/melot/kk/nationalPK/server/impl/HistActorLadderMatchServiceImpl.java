@@ -106,7 +106,7 @@ public class HistActorLadderMatchServiceImpl implements HistActorLadderMatchServ
                         pkId, currentSeasonId, opponentLadderMatchResult, opponentReceiveScore, receiveScore);
 
                 // 设置返回值
-                addHisActorLadderMatchResultDO = new AddHisActorLadderMatchResultDO()
+                addHisActorLadderMatchResultDO = new AddHisActorLadderMatchResultDO();
                 addHisActorLadderMatchResultDO.setActorId(actorId);
                 addHisActorLadderMatchResultDO.setOpponentActorId(opponentActorId);
                 addHisActorLadderMatchResultDO.setReceiveScore(receiveScore);
