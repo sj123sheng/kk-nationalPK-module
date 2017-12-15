@@ -111,6 +111,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
             }else {
 
                 int gameDan = GameDanEnum.STUBBORN_BRONZE.getId();
+                resActorLadderMatchDO = new ResActorLadderMatchDO();
                 resActorLadderMatchDO.setGameDan(gameDan);
                 resActorLadderMatchDO.setGameDanName(GameDanEnum.parseId(gameDan).getValue());
                 resActorLadderMatchDO.setLadderMatchIntegral(0);
