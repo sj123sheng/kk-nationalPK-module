@@ -109,7 +109,14 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
                 }
                 resActorLadderMatchDO.setRanking(ranking);
             }else {
-                return new Result(CommonStateCode.FAIL, "获取主播天梯赛当前赛季战绩资源失败");
+
+                int gameDan = GameDanEnum.STUBBORN_BRONZE.getId();
+                resActorLadderMatchDO.setGameDan(gameDan);
+                resActorLadderMatchDO.setGameDanName(GameDanEnum.parseId(gameDan).getValue());
+                resActorLadderMatchDO.setLadderMatchIntegral(0);
+                resActorLadderMatchDO.setLadderMatchTime(0);
+                resActorLadderMatchDO.setWinningRate(0);
+                resActorLadderMatchDO.setRanking(0);
             }
         }else {
             return new Result(CommonStateCode.FAIL, "获取主播天梯赛当前赛季战绩资源失败");
