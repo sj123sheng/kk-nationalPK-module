@@ -111,6 +111,8 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
             }else {
                 return new Result(CommonStateCode.FAIL, "获取主播天梯赛当前赛季战绩资源失败");
             }
+        }else {
+            return new Result(CommonStateCode.FAIL, "获取主播天梯赛当前赛季战绩资源失败");
         }
         return new Result(CommonStateCode.SUCCESS, "获取主播天梯赛当前赛季战绩资源成功", resActorLadderMatchDO);
     }
@@ -225,11 +227,11 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
                     Long currentBonusPool = nationalPKRelationSource.getCurrentBonusPool();
                     Double price = null;
                     if(gameDan == GameDanEnum.PRECIOUS_PLATINUM_GOLD.getId()) {
-                        price = currentBonusPool * 0.6 / preciousPlatinumGoldCount;
+                        price = currentBonusPool * 0.1 / preciousPlatinumGoldCount;
                     }else if(gameDan == GameDanEnum.RESPLENDENT_DIAMOND.getId()) {
                         price = currentBonusPool * 0.3 / resplendentDiamondCount;
                     }else if(gameDan == GameDanEnum.STRONGEST_KING.getId()) {
-                        price = currentBonusPool * 0.1 / strongestKingCount;
+                        price = currentBonusPool * 0.6 / strongestKingCount;
                     }
 
                     // 发放秀币奖励
