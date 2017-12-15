@@ -63,7 +63,10 @@ public class HistActorLadderMatchServiceImpl implements HistActorLadderMatchServ
     @Override
     public Result<AddHisActorLadderMatchResultDO> addHistActorLadderMatch(int actorId, int opponentActorId, long receiveShowMoney, long opponentReceiveShowMoney, int pkId) {
 
+        AddHisActorLadderMatchResultDO addHisActorLadderMatchResultDO = null;
+
         Result<ConfLadderMatchDO> result = confLadderMatchService.getCurrentSeasonConf();
+
         if(result.getCode().equals(CommonStateCode.SUCCESS) && result.getData() != null) {
 
             ConfLadderMatchDO confLadderMatchDO = result.getData();
@@ -95,17 +98,25 @@ public class HistActorLadderMatchServiceImpl implements HistActorLadderMatchServ
                 int opponentReceiveScore = calculationReceiveScore(opponentActorId, opponentReceiveShowMoney, currentSeasonId, opponentLadderMatchResult);
 
                 // 新增本人主播天梯赛历史记录并且新增或更新本人主播天梯赛资源
-                addActorHistRecord(actorId, opponentActorId, receiveShowMoney, opponentReceiveShowMoney,
+                int gameDan = addActorHistRecord(actorId, opponentActorId, receiveShowMoney, opponentReceiveShowMoney,
                         pkId, currentSeasonId, ladderMatchResult, receiveScore, opponentReceiveScore);
 
                 // 新增对手主播天梯赛历史记录并且新增或更新对手主播天梯赛资源
-                addActorHistRecord(opponentActorId, actorId, opponentReceiveShowMoney, receiveShowMoney,
+                int opponentGameDan = addActorHistRecord(opponentActorId, actorId, opponentReceiveShowMoney, receiveShowMoney,
                         pkId, currentSeasonId, opponentLadderMatchResult, opponentReceiveScore, receiveScore);
 
+                // 设置返回值
+                addHisActorLadderMatchResultDO = new AddHisActorLadderMatchResultDO()
+                addHisActorLadderMatchResultDO.setActorId(actorId);
+                addHisActorLadderMatchResultDO.setOpponentActorId(opponentActorId);
+                addHisActorLadderMatchResultDO.setReceiveScore(receiveScore);
+                addHisActorLadderMatchResultDO.setOpponentReceiveScore(opponentReceiveScore);
+                addHisActorLadderMatchResultDO.setGameDan(gameDan);
+                addHisActorLadderMatchResultDO.setOpponentGameDan(opponentGameDan);
             }
         }
 
-        return new Result(CommonStateCode.SUCCESS, "新增主播天梯赛历史记录成功", true);
+        return new Result(CommonStateCode.SUCCESS, "新增主播天梯赛历史记录成功", addHisActorLadderMatchResultDO);
     }
 
     private int calculationReceiveScore(int actorId, long receiveShowMoney, int currentSeasonId, int ladderMatchResult) {
