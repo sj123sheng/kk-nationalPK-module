@@ -161,10 +161,14 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
         if(currentSeasonId != null) {
 
             ConfLadderMatch confLadderMatch = confLadderMatchMapper.selectByPrimaryKey(currentSeasonId);
-            confLadderMatchDO = switchToConfLadderMatchDO(confLadderMatch);
+            if(confLadderMatch != null) {
+                confLadderMatchDO = switchToConfLadderMatchDO(confLadderMatch);
 
-            Long currentBonusPool = nationalPKRelationSource.getCurrentBonusPool();
-            confLadderMatchDO.setBonusPool(currentBonusPool);
+                Long currentBonusPool = nationalPKRelationSource.getCurrentBonusPool();
+                confLadderMatchDO.setBonusPool(currentBonusPool);
+            }else {
+                return new Result(CommonStateCode.FAIL, "获取当前赛季配置信息失败");
+            }
         }else {
             return new Result(CommonStateCode.FAIL, "获取当前赛季配置信息失败");
         }
@@ -188,8 +192,11 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
 
     private ConfLadderMatchDO switchToConfLadderMatchDO(ConfLadderMatch confLadderMatch) {
 
-        ConfLadderMatchDO confLadderMatchDO = BeanMapper.map(confLadderMatch, ConfLadderMatchDO.class);
-        setStatusAndRemainingTime(confLadderMatchDO);
+        ConfLadderMatchDO confLadderMatchDO = null;
+        if(confLadderMatch != null) {
+            confLadderMatchDO = BeanMapper.map(confLadderMatch, ConfLadderMatchDO.class);
+            setStatusAndRemainingTime(confLadderMatchDO);
+        }
         return confLadderMatchDO;
     }
 
