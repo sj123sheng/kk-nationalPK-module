@@ -90,6 +90,7 @@
             actor_id,
             season_id,
             ladder_match_integral,
+            game_dan,
             ladder_match_time,
             winning_time,
             winning_rate,
