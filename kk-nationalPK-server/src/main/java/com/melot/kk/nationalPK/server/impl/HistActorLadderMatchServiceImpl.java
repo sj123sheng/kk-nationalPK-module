@@ -169,9 +169,9 @@ public class HistActorLadderMatchServiceImpl implements HistActorLadderMatchServ
         if(ladderMatchResult == LadderMatchResultEnum.WIN || ladderMatchResult == LadderMatchResultEnum.TIE) {
             if(receiveShowMoney >= 50000 && receiveShowMoney <= 500000) {
                 receiveScore += 1;
-            }else if(receiveShowMoney >= 501000 && receiveShowMoney <= 1000000) {
+            }else if(receiveShowMoney > 500000 && receiveShowMoney <= 1000000) {
                 receiveScore += 2;
-            }else if(receiveShowMoney >= 1001000) {
+            }else if(receiveShowMoney > 1000000) {
                 receiveScore += 3;
             }
         }
