@@ -16,7 +16,7 @@ public interface ConfLadderMatchMapper {
 
     int getListCount();
 
-    List<ConfLadderMatch> getList(@Param("limit") int limit, @Param("offset") int offset);
+    List<ConfLadderMatch> getList(@Param("limit") Integer limit, @Param("offset") Integer offset);
 
     // 获取正在进行的天梯赛赛季
     ConfLadderMatch getOngoingSeason(Date currentDate);

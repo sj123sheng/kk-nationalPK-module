@@ -48,7 +48,7 @@
         FROM conf_ladder_match
     </select>
 
-    <select id="getList" resultMap="BaseResultMap">
+    <select id="getList"  parameterType="java.util.Map" resultMap="BaseResultMap">
         SELECT
             season_id,
             season_name,
@@ -60,8 +60,11 @@
             update_time
         FROM conf_ladder_match
         ORDER BY season_id DESC
-        LIMIT #{limit,jdbcType=INTEGER}
-        OFFSET #{offset,jdbcType=INTEGER}
+        <if test="limit != null and limit != ''">
+          LIMIT #{limit,jdbcType=INTEGER}
+          OFFSET #{offset,jdbcType=INTEGER}
+        </if>
+
     </select>
 
     <select id="getOngoingSeason" parameterType="java.util.Date" resultMap="BaseResultMap">

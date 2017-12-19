@@ -14,7 +14,9 @@ import com.melot.kktv.base.CommonStateCode;
 import com.melot.kktv.base.Result;
 import com.melot.kktv.util.BeanMapper;
 import com.melot.kktv.util.DateUtils;
+import com.melot.kktv.util.StringUtil;
 import com.melot.module.kkrpc.annotation.RpcService;
+import com.site.lookup.util.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +57,23 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
     public Result<Boolean> addConfLadderMatch(String seasonName, Date startTime, Date endTime, int bonusPoolMultiple) {
 
         Boolean result = false;
+
+        if(StringUtils.isEmpty(seasonName) || startTime == null || endTime == null) {
+            return new Result(CommonStateCode.FAIL,"入参不能为空");
+        }
+
+        List<ConfLadderMatch>  confLadderMatches = confLadderMatchMapper.getList(null, null);
+        if(confLadderMatches != null) {
+            for(ConfLadderMatch confLadderMatch : confLadderMatches) {
+                long seasonStartTime = confLadderMatch.getStartTime().getTime();
+                long seasonEndTime = confLadderMatch.getEndTime().getTime();
+                if((startTime.getTime() <= seasonStartTime && endTime.getTime() >= seasonStartTime)
+                        || (startTime.getTime() >= seasonStartTime && startTime.getTime() <= seasonEndTime)) {
+                    return new Result(CommonStateCode.FAIL,"该时间段内已经配置了比赛，请不要重复配置");
+                }
+            }
+        }
+
         Date nowTime = DateUtils.getCurrentDate();
 
         ConfLadderMatch record = new ConfLadderMatch();
@@ -80,6 +99,10 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
     public Result<Boolean> editConfLadderMatch(int seasonId, String seasonName, Date startTime, Date endTime, int bonusPoolMultiple) {
 
 
+        if(StringUtils.isEmpty(seasonName) || startTime == null || endTime == null) {
+            return new Result(CommonStateCode.FAIL,"入参不能为空");
+        }
+
         ConfLadderMatch record = confLadderMatchMapper.selectByPrimaryKey(seasonId);
 
         if(record == null) {
@@ -98,6 +121,22 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
 
         // 赛季还没开始 可以更新开始和结束时间
         if(nowTime < oldStartTime) {
+
+            List<ConfLadderMatch>  confLadderMatches = confLadderMatchMapper.getList(null, null);
+            if(confLadderMatches != null) {
+                for(ConfLadderMatch confLadderMatch : confLadderMatches) {
+
+                    long seasonStartTime = confLadderMatch.getStartTime().getTime();
+                    long seasonEndTime = confLadderMatch.getEndTime().getTime();
+                    if(!confLadderMatch.getSeasonId().equals(seasonId)) {
+                        if ((startTime.getTime() <= seasonStartTime && endTime.getTime() >= seasonStartTime)
+                                || (startTime.getTime() >= seasonStartTime && startTime.getTime() <= seasonEndTime)) {
+                            return new Result(CommonStateCode.FAIL, "该时间段内已经配置了比赛，请不要重复配置");
+                        }
+                    }
+                }
+            }
+
             record.setStartTime(startTime);
             record.setEndTime(endTime);
         }
