@@ -167,11 +167,11 @@ public class HistActorLadderMatchServiceImpl implements HistActorLadderMatchServ
         }
         // 礼物消耗达到要求并且比赛结果是胜或平 额外加分项
         if(ladderMatchResult == LadderMatchResultEnum.WIN || ladderMatchResult == LadderMatchResultEnum.TIE) {
-            if(receiveShowMoney >= 50000 && receiveShowMoney <= 500000) {
+            if(receiveShowMoney >= 50000 && receiveShowMoney < 500000) {
                 receiveScore += 1;
-            }else if(receiveShowMoney > 500000 && receiveShowMoney <= 1000000) {
+            }else if(receiveShowMoney >= 500000 && receiveShowMoney < 1000000) {
                 receiveScore += 2;
-            }else if(receiveShowMoney > 1000000) {
+            }else if(receiveShowMoney >= 1000000) {
                 receiveScore += 3;
             }
         }
