@@ -84,18 +84,21 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
         if(currentSeasonId != null) {
 
             ResActorLadderMatch resActorLadderMatch = resActorLadderMatchMapper.selectByPrimaryKey(actorId, currentSeasonId);
+
+            // 获取当前赛季是否正在进行中
+            Boolean currentSeasonOngoing = false;
+            Result<ConfLadderMatchDO> result = confLadderMatchService.getConfLadderMatchBySeasonId(currentSeasonId);
+            if (result.getCode().equals(CommonStateCode.SUCCESS) && result.getData() != null) {
+                int currentSeasonStatus = result.getData().getStatus();
+                if (currentSeasonStatus == LadderMatchStatusEnum.ONGOING) {
+                    currentSeasonOngoing = true;
+                }
+            }
+
             if(resActorLadderMatch != null) {
                 resActorLadderMatchDO = BeanMapper.map(resActorLadderMatch, ResActorLadderMatchDO.class);
 
                 // 设置当前赛季是否正在进行中
-                Boolean currentSeasonOngoing = false;
-                Result<ConfLadderMatchDO> result = confLadderMatchService.getConfLadderMatchBySeasonId(currentSeasonId);
-                if (result.getCode().equals(CommonStateCode.SUCCESS) && result.getData() != null) {
-                    int currentSeasonStatus = result.getData().getStatus();
-                    if (currentSeasonStatus == LadderMatchStatusEnum.ONGOING) {
-                        currentSeasonOngoing = true;
-                    }
-                }
                 resActorLadderMatchDO.setCurrentSeasonOngoing(currentSeasonOngoing);
 
                 // 设置游戏段位名称
@@ -118,6 +121,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
                 resActorLadderMatchDO.setLadderMatchTime(0);
                 resActorLadderMatchDO.setWinningRate(0);
                 resActorLadderMatchDO.setRanking(0);
+                resActorLadderMatchDO.setCurrentSeasonOngoing(currentSeasonOngoing);
             }
         }else {
             return new Result(CommonStateCode.FAIL, "获取主播天梯赛当前赛季战绩资源失败");
