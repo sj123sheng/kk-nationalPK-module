@@ -27,17 +27,17 @@ public class NationalPKRelationSource {
 
 	@Autowired
 	@Qualifier("nationalPKdata")
-	private static JedisWrapper nationalPKRelationJedis;
+	private JedisWrapper nationalPKRelationJedis;
 	
-	private static JedisWrapper jedisProxy;
+	private JedisWrapper jedisProxy;
 
-    private static JedisWrapper.HashMap jedisHashMap;
+    private JedisWrapper.HashMap jedisHashMap;
 
 	/**
 	 * 初始化操作
 	 * */
 	@PostConstruct
-	private static void init() {
+	private void init() {
 		try {
 			jedisProxy = nationalPKRelationJedis;
             jedisHashMap = jedisProxy.HASH;
