@@ -246,29 +246,32 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
                         price = currentBonusPool * 0.6 / strongestKingCount;
                     }
 
-                    // 发放秀币奖励
-                    ShowMoneyHistory showMoneyHistory = getShowMoneyHistory(actorId, price.intValue(), seasonId);
-                    UserAssets userAssets;
-                    try {
-                        userAssets = kkUserService.incUserAssets(actorId, price.longValue(), 0, showMoneyHistory);
-                        if (userAssets == null) {
-                            logger.error(errorMsg);
+                    if(price != null) {
+
+                        // 发放秀币奖励
+                        ShowMoneyHistory showMoneyHistory = getShowMoneyHistory(actorId, price.intValue(), seasonId);
+                        UserAssets userAssets;
+                        try {
+                            userAssets = kkUserService.incUserAssets(actorId, price.longValue(), 0, showMoneyHistory);
+                            if (userAssets == null) {
+                                logger.error(errorMsg);
+                                return new Result(CommonStateCode.FAIL, errorMsg);
+                            }
+                        } catch (Exception e) {
+                            logger.error(errorMsg, e);
                             return new Result(CommonStateCode.FAIL, errorMsg);
                         }
-                    } catch (Exception e) {
-                        logger.error(errorMsg, e);
-                        return new Result(CommonStateCode.FAIL, errorMsg);
+
+                        // 更新主播天梯赛资源表发放秀币数量和状态为已发放
+                        resActorLadderMatch.setShowMoneyCount(price.longValue());
+                        resActorLadderMatch.setShowMoneyGiveReward(GiveRewardStatusEnum.ALREADY_GIVE_REWARD);
+                        resActorLadderMatchMapper.updateByPrimaryKey(resActorLadderMatch);
+
+                        // 发送系统消息
+                        String title = seasonName + "奖励发放通知";
+                        String desc = "恭喜你在" + seasonName + "中获得" + GameDanEnum.parseId(gameDan).getValue() + "段位, 特奖励" + price.longValue() + "秀币, 请在个人账户中查收!";
+                        messageService.addSystemMessage(actorId, showMoneyHistory.getHistId(), 9, title, desc);
                     }
-
-                    // 更新主播天梯赛资源表发放秀币数量和状态为已发放
-                    resActorLadderMatch.setShowMoneyCount(price.longValue());
-                    resActorLadderMatch.setShowMoneyGiveReward(GiveRewardStatusEnum.ALREADY_GIVE_REWARD);
-                    resActorLadderMatchMapper.updateByPrimaryKey(resActorLadderMatch);
-
-                    // 发送系统消息
-                    String title = seasonName + "奖励发放通知";
-                    String desc = "恭喜你在" + seasonName + "中获得" + GameDanEnum.parseId(gameDan).getValue() + "段位, 特奖励" + price.longValue() + "秀币, 请在个人账户中查收!";
-                    messageService.addSystemMessage(actorId, showMoneyHistory.getHistId(), 9, title, desc);
                 }
 
                 int medalGiveReward = resActorLadderMatch.getMedalGiveReward();
