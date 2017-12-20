@@ -77,7 +77,7 @@ public enum GameDanEnum {
     }
 
     public static List<String> getNames() {
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         for (GameDanEnum gameDanEnumEnum : GameDanEnum.values()) {
             names.add(gameDanEnumEnum.name());
         }

@@ -18,6 +18,10 @@ package com.melot.kk.nationalPK.api.constant;
  */
 public class GiveRewardStatusEnum {
 
+    private GiveRewardStatusEnum() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * 未发放
      */

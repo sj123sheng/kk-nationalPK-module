@@ -46,8 +46,6 @@ import java.util.List;
 @RpcService(interfaceName = "com.melot.kk.nationalPK.api.service.HistActorLadderMatchService", version = "1.0.0")
 public class HistActorLadderMatchServiceImpl implements HistActorLadderMatchService {
 
-    private static Logger logger = Logger.getLogger(HistActorLadderMatchServiceImpl.class);
-
     @Autowired
     private ConfLadderMatchService confLadderMatchService;
 

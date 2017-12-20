@@ -5,6 +5,10 @@ package com.melot.kk.nationalPK.server.constant;
  */
 public class NationalPKConstant {
 
+    private NationalPKConstant() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /** MQ Topic */
     public static final String CATCHDOLL_SUCCESS_TOPIC = "catchDollSuccessTopic";
 

@@ -1,7 +1,9 @@
 package com.melot.kk.nationalPK.server.redis;
 
 import com.melot.common.melot_jedis.JedisWrapper;
+import com.melot.kk.nationalPK.server.impl.ConfLadderMatchServiceImpl;
 import com.site.lookup.util.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -11,7 +13,9 @@ import javax.annotation.PostConstruct;
 @Component
 public class NationalPKRelationSource {
 
-	private static final int EXPIRE_TIME = 3 * 31 * 24 * 3600;
+    private static Logger logger = Logger.getLogger(NationalPKRelationSource.class);
+
+    private static final int EXPIRE_TIME = 3 * 31 * 24 * 3600;
 
 	// 天梯赛当前赛季key
 	private static final String CURRENT_SEASON_KEY = "current_season_key";
@@ -42,6 +46,7 @@ public class NationalPKRelationSource {
 			jedisProxy = nationalPKRelationJedis;
             jedisHashMap = jedisProxy.HASH;
 		} catch (Exception e) {
+            logger.error("jedisProxy初始化失败", e);
 		}
 	}
 

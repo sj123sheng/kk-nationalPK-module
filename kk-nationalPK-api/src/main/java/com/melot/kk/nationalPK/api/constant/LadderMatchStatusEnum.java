@@ -18,6 +18,10 @@ package com.melot.kk.nationalPK.api.constant;
  */
 public class LadderMatchStatusEnum {
 
+    private LadderMatchStatusEnum() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * 未开始
      */

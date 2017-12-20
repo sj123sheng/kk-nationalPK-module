@@ -128,11 +128,9 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
 
                     long seasonStartTime = confLadderMatch.getStartTime().getTime();
                     long seasonEndTime = confLadderMatch.getEndTime().getTime();
-                    if(!confLadderMatch.getSeasonId().equals(seasonId)) {
-                        if ((startTime.getTime() <= seasonStartTime && endTime.getTime() >= seasonStartTime)
-                                || (startTime.getTime() >= seasonStartTime && startTime.getTime() <= seasonEndTime)) {
+                    if(!confLadderMatch.getSeasonId().equals(seasonId) && ((startTime.getTime() <= seasonStartTime && endTime.getTime() >= seasonStartTime)
+                                || (startTime.getTime() >= seasonStartTime && startTime.getTime() <= seasonEndTime))) {
                             return new Result(CommonStateCode.FAIL, "该时间段内已经配置了比赛，请不要重复配置");
-                        }
                     }
                 }
             }
