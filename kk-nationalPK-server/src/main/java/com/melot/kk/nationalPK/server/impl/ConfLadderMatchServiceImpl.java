@@ -71,6 +71,9 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
                         || (startTime.getTime() >= seasonStartTime && startTime.getTime() <= seasonEndTime)) {
                     return new Result(CommonStateCode.FAIL,"该时间段内已经配置了比赛，请不要重复配置");
                 }
+                if(DateUtils.addHour(startTime, -1).getTime() <= seasonEndTime) {
+                    return new Result(CommonStateCode.FAIL,"新赛季与上赛季间隔时间不能少于1个小时");
+                }
             }
         }
 
