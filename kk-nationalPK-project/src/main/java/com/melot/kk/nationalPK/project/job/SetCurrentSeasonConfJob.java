@@ -1,8 +1,10 @@
 package com.melot.kk.nationalPK.project.job;
 
+import com.melot.common.melot_utils.TenantContext;
 import com.melot.job.api.SimpleJob;
 import com.melot.kk.nationalPK.api.service.ConfLadderMatchService;
 import com.melot.module.kkrpc.annotation.RpcConsumer;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,11 +20,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class SetCurrentSeasonConfJob implements SimpleJob {
 
+    private static Logger logger = Logger.getLogger(SetCurrentSeasonConfJob.class);
+
     @RpcConsumer
     private ConfLadderMatchService confLadderMatchService;
 
     @Override
     public void execute() {
+
+        logger.info("currentThreadId: " + Thread.currentThread().getId() + " tenantId: " + TenantContext.getContext().getTenantId());
 
         confLadderMatchService.setCurrentSeasonConf();
     }

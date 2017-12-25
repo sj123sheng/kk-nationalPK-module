@@ -1,5 +1,6 @@
 package com.melot.kk.nationalPK.project.job;
 
+import com.melot.common.melot_utils.TenantContext;
 import com.melot.job.api.SimpleJob;
 import com.melot.kk.nationalPK.api.constant.GiveRewardStatusEnum;
 import com.melot.kk.nationalPK.api.constant.LadderMatchStatusEnum;
@@ -35,6 +36,8 @@ public class GiveRewardJob implements SimpleJob {
 
     @Override
     public void execute() {
+
+        logger.info("currentThreadId: " + Thread.currentThread().getId() + " tenantId: " + TenantContext.getContext().getTenantId());
 
         Result<ConfLadderMatchDO> result = confLadderMatchService.getCurrentSeasonConf();
 
