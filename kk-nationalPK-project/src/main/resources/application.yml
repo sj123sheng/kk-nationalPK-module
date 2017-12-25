@@ -27,11 +27,11 @@ melot:
       refJobName: setCurrentSeasonConfJob
       email: jian.sheng@melot.cn
       host: 10.0.*.*
-      tenantIds: 0,10086
+      tenantIds: 0
     simpleJob[1]:
       cron: 0 0/30 * * * ?
       jobName: giveRewardJob
       refJobName: giveRewardJob
       email: jian.sheng@melot.cn
       host: 10.0.*.*
-      tenantIds: 0,10086
+      tenantIds: 0
