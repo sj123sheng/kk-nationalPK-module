@@ -175,8 +175,6 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
             int giveReward = confLadderMatchDO.getGiveReward();
             if(status == LadderMatchStatusEnum.OVER && giveReward == GiveRewardStatusEnum.NOT_GIVE_REWARD) {
 
-                int preciousPlatinumGoldCount = resActorLadderMatchMapper.getCountBySeasonIdAndGameDan(seasonId, GameDanEnum.PRECIOUS_PLATINUM_GOLD.getId());
-                int resplendentDiamondCount = resActorLadderMatchMapper.getCountBySeasonIdAndGameDan(seasonId, GameDanEnum.RESPLENDENT_DIAMOND.getId());
                 int strongestKingCount = resActorLadderMatchMapper.getCountBySeasonIdAndGameDan(seasonId, GameDanEnum.STRONGEST_KING.getId());
 
                 Integer count = resActorLadderMatchMapper.getListCount(seasonId);
@@ -193,7 +191,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
                     for(ResActorLadderMatch resActorLadderMatch : resActorLadderMatches) {
                         int actorId = resActorLadderMatch.getActorId();
                         // 给单个主播发放奖励
-                        this.giveReward(actorId, seasonId, confLadderMatchDO.getSeasonName(), preciousPlatinumGoldCount, resplendentDiamondCount, strongestKingCount);
+                        this.giveReward(actorId, seasonId, confLadderMatchDO.getSeasonName(), strongestKingCount);
                     }
                 }
 
@@ -210,7 +208,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
     /**
      * 给本赛季单个主播发放奖励
      */
-    private Result<Boolean> giveReward(int actorId, int seasonId, String seasonName, int preciousPlatinumGoldCount, int resplendentDiamondCount, int strongestKingCount) {
+    private Result<Boolean> giveReward(int actorId, int seasonId, String seasonName, int strongestKingCount) {
 
         String errorMsg = "给本赛季单个主播发放奖励失败 主播id: " + actorId + " seasonId: " + seasonId;
 
@@ -238,12 +236,8 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
 
                     Long currentBonusPool = nationalPKRelationSource.getCurrentBonusPool();
                     Double price = null;
-                    if(gameDan == GameDanEnum.PRECIOUS_PLATINUM_GOLD.getId()) {
-                        price = currentBonusPool * 0.1 / preciousPlatinumGoldCount;
-                    }else if(gameDan == GameDanEnum.RESPLENDENT_DIAMOND.getId()) {
-                        price = currentBonusPool * 0.3 / resplendentDiamondCount;
-                    }else if(gameDan == GameDanEnum.STRONGEST_KING.getId()) {
-                        price = currentBonusPool * 0.6 / strongestKingCount;
+                    if(gameDan == GameDanEnum.STRONGEST_KING.getId()) {
+                        price = currentBonusPool * 0.85 / strongestKingCount;
                     }
 
                     if(price != null) {

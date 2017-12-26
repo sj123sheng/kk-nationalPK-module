@@ -225,7 +225,7 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
             int seasonId = confLadderMatch.getSeasonId();
             long bonusPool = resActorLadderMatchMapper.getBonusPoolShowMoneyCount(seasonId);
             int bonusPoolMultiple= confLadderMatch.getBonusPoolMultiple();
-            bonusPool = (long) (bonusPool * 0.055 * bonusPoolMultiple / 100);
+            bonusPool = (long) (bonusPool * 0.015 * bonusPoolMultiple / 100);
 
             nationalPKRelationSource.setCurrentSeason(seasonId, bonusPool);
         }

@@ -180,15 +180,15 @@ public class HistActorLadderMatchServiceImpl implements HistActorLadderMatchServ
     private int getGameDan(int integral) {
 
         int gameDan;
-        if(integral < 100) {
+        if(integral < 20) {
             gameDan = GameDanEnum.STUBBORN_BRONZE.getId();
-        }else if(integral < 180) {
+        }else if(integral < 50) {
             gameDan = GameDanEnum.HEROIC_SILVER.getId();
-        }else if(integral < 240) {
+        }else if(integral < 100) {
             gameDan = GameDanEnum.GLORY_OF_GOLD.getId();
-        }else if(integral < 280) {
+        }else if(integral < 160) {
             gameDan = GameDanEnum.PRECIOUS_PLATINUM_GOLD.getId();
-        }else if(integral < 350) {
+        }else if(integral < 240) {
             gameDan = GameDanEnum.RESPLENDENT_DIAMOND.getId();
         }else {
             gameDan = GameDanEnum.STRONGEST_KING.getId();
