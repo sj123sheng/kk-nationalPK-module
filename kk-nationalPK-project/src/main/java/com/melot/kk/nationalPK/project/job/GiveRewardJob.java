@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 /**
  * Title:
  * <p>
- * Description: 直播精灵心跳监控
+ * Description: 赛季结束 发放天梯赛奖励任务
  * </p>
  *
  * @author shengjain
@@ -37,7 +37,7 @@ public class GiveRewardJob implements SimpleJob {
     @Override
     public void execute() {
 
-        logger.info("currentThreadId: " + Thread.currentThread().getId() + " tenantId: " + TenantContext.getContext().getTenantId());
+        logger.info("tenantId: " + TenantContext.getContext().getTenantId());
 
         Result<ConfLadderMatchDO> result = confLadderMatchService.getCurrentSeasonConf();
 
