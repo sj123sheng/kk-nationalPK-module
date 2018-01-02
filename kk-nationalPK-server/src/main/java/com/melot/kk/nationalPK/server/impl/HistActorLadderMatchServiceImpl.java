@@ -231,6 +231,7 @@ public class HistActorLadderMatchServiceImpl implements HistActorLadderMatchServ
             resActorLadderMatch.setActorId(actorId);
             resActorLadderMatch.setSeasonId(currentSeasonId);
 
+            gameDan = getGameDan(receiveScore);
             resActorLadderMatch.setLadderMatchIntegral(receiveScore);
             resActorLadderMatch.setGameDan(gameDan);
             resActorLadderMatch.setLadderMatchTime(1);
