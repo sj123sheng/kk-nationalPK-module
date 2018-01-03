@@ -137,9 +137,6 @@ public class HistActorLadderMatchServiceImpl implements HistActorLadderMatchServ
         } else if(gameDan == GameDanEnum.STRONGEST_KING.getId()) {
             lowestGiftConsume = 500000;
         }
-        // todo 测试使用 测试完需要删除
-        lowestGiftConsume = lowestGiftConsume/1000;
-
         int receiveScore = getReceiveScore(lowestGiftConsume, receiveShowMoney, ladderMatchResult);
         return receiveScore;
     }
@@ -168,11 +165,11 @@ public class HistActorLadderMatchServiceImpl implements HistActorLadderMatchServ
         }
         // 礼物消耗达到要求并且比赛结果是胜或平 额外加分项
         if(ladderMatchResult == LadderMatchResultEnum.WIN || ladderMatchResult == LadderMatchResultEnum.TIE) {
-            if(receiveShowMoney >= 50000/1000 && receiveShowMoney < 500000/1000) {
+            if(receiveShowMoney >= 50000 && receiveShowMoney < 500000) {
                 receiveScore += 1;
-            }else if(receiveShowMoney >= 500000/1000 && receiveShowMoney < 1000000/1000) {
+            }else if(receiveShowMoney >= 500000 && receiveShowMoney < 1000000) {
                 receiveScore += 2;
-            }else if(receiveShowMoney >= 1000000/1000) {
+            }else if(receiveShowMoney >= 1000000) {
                 receiveScore += 3;
             }
         }
@@ -183,15 +180,15 @@ public class HistActorLadderMatchServiceImpl implements HistActorLadderMatchServ
     private int getGameDan(int integral) {
 
         int gameDan;
-        if(integral < 20/10) {
+        if(integral < 20) {
             gameDan = GameDanEnum.STUBBORN_BRONZE.getId();
-        }else if(integral < 50/10) {
+        }else if(integral < 50) {
             gameDan = GameDanEnum.HEROIC_SILVER.getId();
-        }else if(integral < 100/10) {
+        }else if(integral < 100) {
             gameDan = GameDanEnum.GLORY_OF_GOLD.getId();
-        }else if(integral < 160/10) {
+        }else if(integral < 160) {
             gameDan = GameDanEnum.PRECIOUS_PLATINUM_GOLD.getId();
-        }else if(integral < 240/10) {
+        }else if(integral < 240) {
             gameDan = GameDanEnum.RESPLENDENT_DIAMOND.getId();
         }else {
             gameDan = GameDanEnum.STRONGEST_KING.getId();
