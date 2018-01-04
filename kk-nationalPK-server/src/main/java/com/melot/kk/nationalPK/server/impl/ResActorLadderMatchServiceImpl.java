@@ -210,7 +210,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
      */
     private Result<Boolean> giveReward(int actorId, int seasonId, String seasonName, int strongestKingCount) {
 
-        String errorMsg = "给本赛季单个主播发放奖励失败 主播id: " + actorId + " seasonId: " + seasonId;
+        String errorMsg = "发放奖励失败 主播id: " + actorId + " seasonId: " + seasonId;
 
         try {
 
@@ -222,7 +222,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
             Boolean startGiveReward = nationalPKRelationSource.startGiveReward(actorId);
             if(startGiveReward) {
 
-                logger.error(errorMsg);
+                logger.error("该主播已经在开始发放奖励 " + errorMsg);
                 return new Result(CommonStateCode.FAIL, errorMsg);
             }
 
@@ -248,11 +248,11 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
                         try {
                             userAssets = kkUserService.incUserAssets(actorId, price.longValue(), 0, showMoneyHistory);
                             if (userAssets == null) {
-                                logger.error(errorMsg);
+                                logger.error("发放秀币奖励失败 " + errorMsg);
                                 return new Result(CommonStateCode.FAIL, errorMsg);
                             }
                         } catch (Exception e) {
-                            logger.error(errorMsg, e);
+                            logger.error("发放秀币奖励失败 " + errorMsg, e);
                             return new Result(CommonStateCode.FAIL, errorMsg);
                         }
 
@@ -272,16 +272,21 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
                 // 判断该主播是否已经发放勋章奖励
                 if(medalGiveReward == 0) {
 
-                    // 发放勋章奖励
-                    // 通过disconf获取勋章id和勋章过期时间
-                    int medalId = getMedalId(gameDan);
-                    int medalDeadline = configService.getMedalDeadline();
-                    activityMedalService.insertOperatorSendActivityMedalNew(String.valueOf(actorId), medalId, 0, medalDeadline, 0, 1, "天梯赛发放奖励获得段位勋章", 0);
+                    try {
+                        // 发放勋章奖励
+                        // 通过disconf获取勋章id和勋章过期时间
+                        int medalId = getMedalId(gameDan);
+                        int medalDeadline = configService.getMedalDeadline();
+                        activityMedalService.insertOperatorSendActivityMedalNew(String.valueOf(actorId), medalId, 0, medalDeadline, 0, 1, "天梯赛发放奖励获得段位勋章", 0);
 
-                    // 更新主播天梯赛资源表发放秀币数量和状态为已发放
-                    resActorLadderMatch.setMedalId(medalId);
-                    resActorLadderMatch.setMedalGiveReward(GiveRewardStatusEnum.ALREADY_GIVE_REWARD);
-                    resActorLadderMatchMapper.updateByPrimaryKey(resActorLadderMatch);
+                        // 更新主播天梯赛资源表发放秀币数量和状态为已发放
+                        resActorLadderMatch.setMedalId(medalId);
+                        resActorLadderMatch.setMedalGiveReward(GiveRewardStatusEnum.ALREADY_GIVE_REWARD);
+                        resActorLadderMatchMapper.updateByPrimaryKey(resActorLadderMatch);
+                    } catch (Exception e) {
+                        logger.error("发放勋章奖励失败 " + errorMsg, e);
+                        return new Result(CommonStateCode.FAIL, errorMsg);
+                    }
                 }
             }
 
