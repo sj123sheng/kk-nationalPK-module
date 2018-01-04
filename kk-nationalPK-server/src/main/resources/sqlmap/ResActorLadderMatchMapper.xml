@@ -103,7 +103,7 @@
             update_time
         FROM res_actor_ladder_match
         WHERE season_id = #{seasonId,jdbcType=INTEGER}
-        ORDER BY ladder_match_integral DESC, winning_rate DESC, ladder_match_time DESC
+        ORDER BY ladder_match_integral DESC, winning_rate DESC, ladder_match_time DESC, create_time desc
         LIMIT #{limit,jdbcType=INTEGER}
         OFFSET #{offset,jdbcType=INTEGER}
     </select>
