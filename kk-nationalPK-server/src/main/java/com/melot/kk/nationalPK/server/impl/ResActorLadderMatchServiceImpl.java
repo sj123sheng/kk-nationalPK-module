@@ -1,6 +1,7 @@
 package com.melot.kk.nationalPK.server.impl;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import com.melot.common.driver.service.MessageService;
 import com.melot.kk.nationalPK.api.constant.GameDanEnum;
 import com.melot.kk.nationalPK.api.constant.GiveRewardStatusEnum;
@@ -184,6 +185,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
 
                     int offset = pageIndex * limit;
                     List<ResActorLadderMatch> resActorLadderMatches = resActorLadderMatchMapper.getList(seasonId, limit, offset);
+                    logger.error("正在发放奖励的主播列表 " + new Gson().toJson(resActorLadderMatches));
                     if(resActorLadderMatches == null || resActorLadderMatches.size() == 0) {
                         break;
                     }
