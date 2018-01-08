@@ -284,7 +284,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
                     }
                 }
             }else {
-                return new Result(CommonStateCode.FAIL, "本赛季尚未结束或已结束未结算, 不能发放秀币奖励");
+                return new Result(CommonStateCode.FAIL, "本赛季不是已结算待发放状态, 不能发放秀币奖励");
             }
 
             // 更新当前赛季奖励状态为已发放
