@@ -251,8 +251,10 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
             }
         }
 
-        ConfLadderMatchDO confLadderMatchDO = confLadderMatchService.getCurrentSeasonConf().getData();
-        long bonusPool = confLadderMatchDO == null ? 0L: confLadderMatchDO.getBonusPool();
+        ConfLadderMatch confLadderMatch = confLadderMatchMapper.selectByPrimaryKey(seasonId);
+        long bonusPool = resActorLadderMatchMapper.getBonusPoolShowMoneyCount(seasonId);
+        int bonusPoolMultiple = confLadderMatch == null ? 0 : confLadderMatch.getBonusPoolMultiple();
+        bonusPool = (long) (bonusPool * 0.015 * bonusPoolMultiple / 100);
 
         showMoneyGiveRewardDO.setBonusPoolShowMoney(bonusPool);
         showMoneyGiveRewardDO.setShouldGiveRewardShowMoney(shouldGiveRewardShowMoney);
