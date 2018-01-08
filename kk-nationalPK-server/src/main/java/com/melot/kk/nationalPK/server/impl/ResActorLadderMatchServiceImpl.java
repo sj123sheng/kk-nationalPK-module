@@ -257,7 +257,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
         showMoneyGiveRewardDO.setBonusPoolShowMoney(bonusPool);
         showMoneyGiveRewardDO.setShouldGiveRewardShowMoney(shouldGiveRewardShowMoney);
         showMoneyGiveRewardDO.setResActorLadderMatchDOS(resActorLadderMatchDOS);
-        return new Result(CommonStateCode.SUCCESS, "获取天梯榜成功", showMoneyGiveRewardDO);
+        return new Result(CommonStateCode.SUCCESS, "获取本赛季主播秀币发放列表成功", showMoneyGiveRewardDO);
     }
 
     @Override
