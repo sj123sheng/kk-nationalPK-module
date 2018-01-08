@@ -221,7 +221,7 @@ public class HistActorLadderMatchServiceImpl implements HistActorLadderMatchServ
         // 新增或更新单个主播天梯赛资源
         ResActorLadderMatch resActorLadderMatch = resActorLadderMatchMapper.selectByPrimaryKey(actorId, currentSeasonId);
         int winningTime = ladderMatchResult == LadderMatchResultEnum.WIN ? 1 : 0;
-        int gameDan = GameDanEnum.STUBBORN_BRONZE.getId();
+        int gameDan;
 
         if(resActorLadderMatch == null) {
             resActorLadderMatch = new ResActorLadderMatch();

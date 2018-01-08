@@ -121,4 +121,26 @@
               AND game_dan = #{gameDan,jdbcType=INTEGER}
     </select>
 
+    <select id="getShowMoneyGiveRewardList" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+            actor_id,
+            season_id,
+            ladder_match_integral,
+            game_dan,
+            ladder_match_time,
+            winning_time,
+            winning_rate,
+            show_money_give_reward,
+            medal_give_reward,
+            show_money_count,
+            medal_id,
+            receive_show_money,
+            create_time,
+            update_time
+        FROM res_actor_ladder_match
+        WHERE season_id = #{seasonId,jdbcType=INTEGER}
+        AND show_money_count > 0
+        ORDER BY ladder_match_integral DESC, winning_rate DESC, ladder_match_time DESC, create_time desc
+    </select>
+
 </mapper>

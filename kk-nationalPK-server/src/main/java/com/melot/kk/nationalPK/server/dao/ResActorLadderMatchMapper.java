@@ -25,4 +25,8 @@ public interface ResActorLadderMatchMapper {
     Integer getListCount(@Param("seasonId") int seasonId);
 
     Integer getCountBySeasonIdAndGameDan(@Param("seasonId") int seasonId, @Param("gameDan") int gameDan);
+
+    // 获取主播秀币发放列表
+    List<ResActorLadderMatch> getShowMoneyGiveRewardList(@Param("seasonId") int seasonId);
+
 }

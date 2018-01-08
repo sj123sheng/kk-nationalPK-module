@@ -32,4 +32,9 @@ public class GiveRewardStatusEnum {
      */
     public static final int ALREADY_GIVE_REWARD = 1;
 
+    /**
+     * 已结算待发放
+     */
+    public static final int WAIT_GIVE_REWARD = 2;
+
 }

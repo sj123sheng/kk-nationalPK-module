@@ -41,6 +41,14 @@ public class ConfigService {
     // 最强王者勋章id
     private int strongestKingMedalId;
 
+    // 通知相关人员发放奖励情况的邮件列表
+    private String toMails;
+
+    @DisconfFileItem(name = "to.mails", associateField = "toMails")
+    public String getToMails() {
+        return toMails;
+    }
+
     @DisconfFileItem(name = "medal.deadline", associateField = "medalDeadline")
     public int getMedalDeadline() {
         return medalDeadline;

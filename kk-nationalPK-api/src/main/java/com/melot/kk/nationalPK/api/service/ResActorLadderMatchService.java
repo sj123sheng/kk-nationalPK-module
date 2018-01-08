@@ -1,6 +1,7 @@
 package com.melot.kk.nationalPK.api.service;
 
 import com.melot.kk.nationalPK.api.domain.DO.ResActorLadderMatchDO;
+import com.melot.kk.nationalPK.api.domain.DO.ShowMoneyGiveRewardDO;
 import com.melot.kktv.base.Result;
 
 import java.util.List;
@@ -31,9 +32,21 @@ public interface ResActorLadderMatchService {
     Result<List<ResActorLadderMatchDO>> getLadderChart(int pageIndex, int countPerPage);
 
     /**
-     * 赛季结束给本赛季所有主播发放奖励
+     * 赛季结束给本赛季所有主播发放奖励(结算秀币奖励和发放勋章奖励)
      * @param seasonId 赛季id
      */
     Result<Boolean> giveReward(int seasonId);
+
+    /**
+     * 获取本赛季主播秀币发放列表
+     * @param seasonId 赛季id
+     */
+    Result<ShowMoneyGiveRewardDO> getShowMoneyGiveRewardList(int seasonId);
+
+    /**
+     * 秀币奖励结算完毕给本赛季所有主播发放秀币奖励
+     * @param seasonId 赛季id
+     */
+    Result<Boolean> giveRewardShowMoney(int seasonId);
 
 }

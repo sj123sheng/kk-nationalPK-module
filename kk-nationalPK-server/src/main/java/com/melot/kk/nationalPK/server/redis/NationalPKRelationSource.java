@@ -1,7 +1,6 @@
 package com.melot.kk.nationalPK.server.redis;
 
 import com.melot.common.melot_jedis.JedisWrapper;
-import com.melot.kk.nationalPK.server.impl.ConfLadderMatchServiceImpl;
 import com.site.lookup.util.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

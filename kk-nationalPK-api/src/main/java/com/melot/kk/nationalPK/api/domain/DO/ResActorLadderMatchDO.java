@@ -45,11 +45,37 @@ public class ResActorLadderMatchDO implements Serializable {
     private String gameDanName;
 
     /**
+     * 秀币是否发放
+     */
+    private Integer showMoneyGiveReward;
+
+    /**
+     * 发放秀币数量
+     */
+    private Long showMoneyCount;
+
+    /**
      * 当前赛季是否正在进行中 true-正在进行中 false-已结束
      */
     private boolean currentSeasonOngoing;
 
     private static final long serialVersionUID = 1L;
+
+    public Integer getShowMoneyGiveReward() {
+        return showMoneyGiveReward;
+    }
+
+    public void setShowMoneyGiveReward(Integer showMoneyGiveReward) {
+        this.showMoneyGiveReward = showMoneyGiveReward;
+    }
+
+    public Long getShowMoneyCount() {
+        return showMoneyCount;
+    }
+
+    public void setShowMoneyCount(Long showMoneyCount) {
+        this.showMoneyCount = showMoneyCount;
+    }
 
     public Integer getActorId() {
         return actorId;
