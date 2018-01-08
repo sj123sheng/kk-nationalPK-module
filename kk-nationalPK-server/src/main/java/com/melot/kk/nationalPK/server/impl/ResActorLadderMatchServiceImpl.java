@@ -184,7 +184,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
 
                 int strongestKingCount = resActorLadderMatchMapper.getCountBySeasonIdAndGameDan(seasonId, GameDanEnum.STRONGEST_KING.getId());
                 Long giveRewardShowMoneyTotalCount = 0L;
-                Map<Integer, Long> actorGiveRewardMap = Maps.newTreeMap();
+                Map<Integer, Long> actorGiveRewardMap = Maps.newLinkedHashMap();
                 Integer count = resActorLadderMatchMapper.getListCount(seasonId);
                 int limit = 20;
                 int pages = count / limit + 1;
