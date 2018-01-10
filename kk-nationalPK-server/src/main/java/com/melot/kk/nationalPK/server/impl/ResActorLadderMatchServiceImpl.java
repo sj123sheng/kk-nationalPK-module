@@ -411,7 +411,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
                         resActorLadderMatchMapper.updateByPrimaryKey(resActorLadderMatch);
                     } catch (Exception e) {
                         logger.error("发放勋章奖励失败 " + errorMsg, e);
-                        return new Result(CommonStateCode.FAIL, errorMsg);
+                        //return new Result(CommonStateCode.FAIL, errorMsg);
                     }
                 }
             }
