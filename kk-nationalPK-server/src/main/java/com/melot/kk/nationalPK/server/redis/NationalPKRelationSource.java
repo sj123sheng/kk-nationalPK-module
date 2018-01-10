@@ -87,7 +87,7 @@ public class NationalPKRelationSource {
 
         long num = jedisProxy.STRINGS.incrBy(startGiveRewardKey, 1);
 
-        jedisProxy.KEYS.expire(startGiveRewardKey, 60);
+        jedisProxy.KEYS.expire(startGiveRewardKey, 5);
         if(num > 1) {
             return true;
         }
