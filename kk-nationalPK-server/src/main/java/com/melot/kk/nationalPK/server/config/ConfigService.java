@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
  * 2017/12/11       shengjian     1.0
  */
 @Service
-@DisconfFile(filename = "config.properties", copy2TargetDirPath = "conf")
+@DisconfFile(filename = "config.properties", targetDirPath = "conf")
 public class ConfigService {
 
     // 欢乐PK-天梯赛勋章过期时间(单位:天)

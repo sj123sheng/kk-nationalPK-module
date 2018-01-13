@@ -200,7 +200,6 @@
         <dependency>
             <groupId>com.baidu.disconf</groupId>
             <artifactId>disconf-client-melot</artifactId>
-            <version>2.6.34</version>
         </dependency>
 
         <dependency>
