@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class ConfLadderMatchServiceImplTest {
 
-    @RpcConsumer
+    @RpcConsumer(version="1.0.0")
     ConfLadderMatchService confLadderMatchService;
 
 
