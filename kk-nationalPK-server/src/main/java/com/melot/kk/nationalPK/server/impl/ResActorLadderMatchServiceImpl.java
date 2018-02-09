@@ -351,13 +351,16 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
 
                     // 设置游戏段位名称
                     int gameDan = resActorLadderMatchDO.getGameDan();
-                    resActorLadderMatchDO.setGameDanName(GameDanEnum.parseId(gameDan).getValue());
+                    if(gameDan == GameDanEnum.STRONGEST_KING.getId()) {
 
-                    // 设置主播排名
-                    int ranking = i + 1;
-                    resActorLadderMatchDO.setRanking(ranking);
+                        resActorLadderMatchDO.setGameDanName(GameDanEnum.parseId(gameDan).getValue());
 
-                    resActorLadderMatchDOS.add(resActorLadderMatchDO);
+                        // 设置主播排名
+                        int ranking = i + 1;
+                        resActorLadderMatchDO.setRanking(ranking);
+
+                        resActorLadderMatchDOS.add(resActorLadderMatchDO);
+                    }
                 }
             }
         }
