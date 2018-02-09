@@ -1,6 +1,6 @@
 package com.melot.kk.nationalPK.server.redis;
 
-import com.melot.common.melot_jedis.JedisWrapper;
+import com.melot.common.melot_jedis.HAShardedJedisWrapper;
 import com.site.lookup.util.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,8 @@ public class NationalPKRelationSource {
 
     private static final int EXPIRE_TIME = 3 * 31 * 24 * 3600;
 
+    private static final int GIVE_REWARD_JOB_EXPIRE_TIME = 1 * 60;
+
 	// 天梯赛当前赛季key
 	private static final String CURRENT_SEASON_KEY = "current_season_key";
 
@@ -28,13 +30,15 @@ public class NationalPKRelationSource {
     // 开始发放奖励key后缀
     private static final String START_GIVE_REWARD_SUFFIX = "_start_give_reward";
 
-	@Autowired
-	@Qualifier("nationalPKdata")
-	private JedisWrapper nationalPKRelationJedis;
-	
-	private JedisWrapper jedisProxy;
+    private static final String START_GIVE_REWARD_JOB_KEY = "start_give_reward_job_key";
 
-    private JedisWrapper.HashMap jedisHashMap;
+    @Autowired
+	@Qualifier("kkapicache")
+	private HAShardedJedisWrapper nationalPKRelationJedis;
+	
+	private HAShardedJedisWrapper jedisProxy;
+
+    private HAShardedJedisWrapper.HashMap jedisHashMap;
 
 	/**
 	 * 初始化操作
@@ -48,6 +52,16 @@ public class NationalPKRelationSource {
             logger.error("jedisProxy初始化失败", e);
 		}
 	}
+
+    public Boolean startGiveRewardJob() {
+        String key = START_GIVE_REWARD_JOB_KEY;
+        long num = jedisProxy.STRINGS.incrBy(key, 1);
+        jedisProxy.KEYS.expire(key, GIVE_REWARD_JOB_EXPIRE_TIME);
+        if(num > 1) {
+            return true;
+        }
+        return false;
+    }
 
 	public Integer getCurrentSeasonId() {
 

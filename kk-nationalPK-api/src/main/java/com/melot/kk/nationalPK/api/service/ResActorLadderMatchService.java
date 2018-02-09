@@ -49,4 +49,9 @@ public interface ResActorLadderMatchService {
      */
     Result<Boolean> giveRewardShowMoney(int seasonId);
 
+    /**
+     * 获取上赛季最强王者的前五名
+     */
+    Result<List<ResActorLadderMatchDO>> getLastSeasonStrongestKingTop5();
+
 }

@@ -59,6 +59,21 @@ public class ResActorLadderMatchDO implements Serializable {
      */
     private boolean currentSeasonOngoing;
 
+    /**
+     * 下一级游戏段位 如果当前段位是最强王者 返回 6-最强王者
+     */
+    private Integer nextLevelGameDan;
+
+    /**
+     * 下一级游戏段位名称
+     */
+    private String nextLevelGameDanName;
+
+    /**
+     * 下一级所需积分 如果当前段位是最强王者 返回最强王者所需积分
+     */
+    private Integer nextLevelIntegral;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getShowMoneyGiveReward() {
@@ -147,5 +162,29 @@ public class ResActorLadderMatchDO implements Serializable {
 
     public void setCurrentSeasonOngoing(boolean currentSeasonOngoing) {
         this.currentSeasonOngoing = currentSeasonOngoing;
+    }
+
+    public Integer getNextLevelGameDan() {
+        return nextLevelGameDan;
+    }
+
+    public void setNextLevelGameDan(Integer nextLevelGameDan) {
+        this.nextLevelGameDan = nextLevelGameDan;
+    }
+
+    public String getNextLevelGameDanName() {
+        return nextLevelGameDanName;
+    }
+
+    public void setNextLevelGameDanName(String nextLevelGameDanName) {
+        this.nextLevelGameDanName = nextLevelGameDanName;
+    }
+
+    public Integer getNextLevelIntegral() {
+        return nextLevelIntegral;
+    }
+
+    public void setNextLevelIntegral(Integer nextLevelIntegral) {
+        this.nextLevelIntegral = nextLevelIntegral;
     }
 }

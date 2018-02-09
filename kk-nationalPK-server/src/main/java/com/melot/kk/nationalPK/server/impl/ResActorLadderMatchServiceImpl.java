@@ -38,6 +38,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.melot.kk.nationalPK.api.constant.GameDanEnum.STUBBORN_BRONZE;
+
 
 /**
  * @description: 全民PK-主播天梯赛资源接口服务
@@ -101,6 +103,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
                 }
             }
 
+            int gameDan;
             if(resActorLadderMatch != null) {
                 resActorLadderMatchDO = BeanMapper.map(resActorLadderMatch, ResActorLadderMatchDO.class);
 
@@ -108,7 +111,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
                 resActorLadderMatchDO.setCurrentSeasonOngoing(currentSeasonOngoing);
 
                 // 设置游戏段位名称
-                int gameDan = resActorLadderMatchDO.getGameDan();
+                gameDan = resActorLadderMatchDO.getGameDan();
                 resActorLadderMatchDO.setGameDanName(GameDanEnum.parseId(gameDan).getValue());
 
                 // 设置主播排名
@@ -119,7 +122,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
                 resActorLadderMatchDO.setRanking(ranking);
             }else {
 
-                int gameDan = GameDanEnum.STUBBORN_BRONZE.getId();
+                gameDan = STUBBORN_BRONZE.getId();
                 resActorLadderMatchDO = new ResActorLadderMatchDO();
                 resActorLadderMatchDO.setGameDan(gameDan);
                 resActorLadderMatchDO.setGameDanName(GameDanEnum.parseId(gameDan).getValue());
@@ -129,10 +132,34 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
                 resActorLadderMatchDO.setRanking(0);
                 resActorLadderMatchDO.setCurrentSeasonOngoing(currentSeasonOngoing);
             }
+
+            int nextLevelGameDan = gameDan == GameDanEnum.STRONGEST_KING.getId() ? gameDan : gameDan + 1;
+            resActorLadderMatchDO.setNextLevelGameDan(nextLevelGameDan);
+            resActorLadderMatchDO.setNextLevelGameDanName(GameDanEnum.parseId(nextLevelGameDan).getValue());
+            int nextLevelIntegral = getNextLevelIntegral(gameDan);
+            resActorLadderMatchDO.setNextLevelIntegral(nextLevelIntegral);
         }else {
             return new Result(CommonStateCode.FAIL, "获取主播天梯赛当前赛季战绩资源失败");
         }
         return new Result(CommonStateCode.SUCCESS, "获取主播天梯赛当前赛季战绩资源成功", resActorLadderMatchDO);
+    }
+
+    private int getNextLevelIntegral(int gameDan) {
+        int nextLevelIntegral = 0;
+        if(gameDan == GameDanEnum.STUBBORN_BRONZE.getId()) {
+            nextLevelIntegral = 20;
+        }else if(gameDan == GameDanEnum.HEROIC_SILVER.getId()) {
+            nextLevelIntegral = 50;
+        }else if(gameDan == GameDanEnum.GLORY_OF_GOLD.getId()) {
+            nextLevelIntegral = 100;
+        }else if(gameDan == GameDanEnum.PRECIOUS_PLATINUM_GOLD.getId()) {
+            nextLevelIntegral = 160;
+        }else if(gameDan == GameDanEnum.RESPLENDENT_DIAMOND.getId()) {
+            nextLevelIntegral = 240;
+        }else if(gameDan == GameDanEnum.STRONGEST_KING.getId()) {
+            nextLevelIntegral = 240;
+        }
+        return nextLevelIntegral;
     }
 
     @Override
@@ -171,58 +198,63 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
     @Override
     public Result<Boolean> giveReward(int seasonId) {
 
-        // 判断本赛季是否已经结束并且还没发放奖励 如果是开始发放奖励
-        Result<ConfLadderMatchDO> result = confLadderMatchService.getConfLadderMatchBySeasonId(seasonId);
+        if(!nationalPKRelationSource.startGiveRewardJob()) {
+            // 判断本赛季是否已经结束并且还没发放奖励 如果是开始发放奖励
+            Result<ConfLadderMatchDO> result = confLadderMatchService.getConfLadderMatchBySeasonId(seasonId);
 
-        if(result.getCode().equals(CommonStateCode.SUCCESS) && result.getData() != null) {
+            if (result.getCode().equals(CommonStateCode.SUCCESS) && result.getData() != null) {
 
-            ConfLadderMatchDO confLadderMatchDO = result.getData();
-            int status = confLadderMatchDO.getStatus();
-            int giveReward = confLadderMatchDO.getGiveReward();
-            String seasonName = confLadderMatchDO.getSeasonName();
-            if(status == LadderMatchStatusEnum.OVER && giveReward == GiveRewardStatusEnum.NOT_GIVE_REWARD) {
+                ConfLadderMatchDO confLadderMatchDO = result.getData();
+                int status = confLadderMatchDO.getStatus();
+                int giveReward = confLadderMatchDO.getGiveReward();
+                String seasonName = confLadderMatchDO.getSeasonName();
+                if (status == LadderMatchStatusEnum.OVER && giveReward == GiveRewardStatusEnum.NOT_GIVE_REWARD) {
 
-                int strongestKingCount = resActorLadderMatchMapper.getCountBySeasonIdAndGameDan(seasonId, GameDanEnum.STRONGEST_KING.getId());
-                Long giveRewardShowMoneyTotalCount = 0L;
-                Map<Integer, Long> actorGiveRewardMap = Maps.newLinkedHashMap();
-                Integer count = resActorLadderMatchMapper.getListCount(seasonId);
-                int limit = 20;
-                int pages = count / limit + 1;
-                for(int pageIndex = 0; pageIndex < pages; pageIndex++) {
+                    int strongestKingCount = resActorLadderMatchMapper.getCountBySeasonIdAndGameDan(seasonId, GameDanEnum.STRONGEST_KING.getId());
+                    Long giveRewardShowMoneyTotalCount = 0L;
+                    Map<Integer, Long> actorGiveRewardMap = Maps.newLinkedHashMap();
+                    Integer count = resActorLadderMatchMapper.getListCount(seasonId);
+                    int limit = 20;
+                    int pages = count / limit + 1;
+                    for (int pageIndex = 0; pageIndex < pages; pageIndex++) {
 
-                    int offset = pageIndex * limit;
-                    List<ResActorLadderMatch> resActorLadderMatches = resActorLadderMatchMapper.getList(seasonId, limit, offset);
-                    if(resActorLadderMatches == null || resActorLadderMatches.size() == 0) {
-                        break;
-                    }
+                        int offset = pageIndex * limit;
+                        List<ResActorLadderMatch> resActorLadderMatches = resActorLadderMatchMapper.getList(seasonId, limit, offset);
+                        if (resActorLadderMatches == null || resActorLadderMatches.size() == 0) {
+                            break;
+                        }
 
-                    logger.info("正在计算应发放奖励的主播列表 " + new Gson().toJson(resActorLadderMatches));
-                    for(int i = 0; i < resActorLadderMatches.size(); i++) {
-                        int actorId = resActorLadderMatches.get(i).getActorId();
-                        // 获取主播排名
-                        int ranking = offset + (i + 1);
-                        // 给单个主播发放奖励
-                        Result<Long> giveRewardResult = this.giveReward(actorId, seasonId, strongestKingCount, ranking);
+                        logger.info("正在计算应发放奖励的主播列表 " + new Gson().toJson(resActorLadderMatches));
+                        for (int i = 0; i < resActorLadderMatches.size(); i++) {
+                            int actorId = resActorLadderMatches.get(i).getActorId();
+                            // 获取主播排名
+                            int ranking = offset + (i + 1);
+                            // 给单个主播发放奖励
+                            Result<Long> giveRewardResult = this.giveReward(actorId, seasonId, strongestKingCount, ranking);
 
-                        if(giveRewardResult.getCode().equals(CommonStateCode.SUCCESS) && giveRewardResult.getData() != null) {
-                            long giveRewardShowMoneyCount = giveRewardResult.getData();
-                            giveRewardShowMoneyTotalCount += giveRewardShowMoneyCount;
-                            actorGiveRewardMap.put(actorId, giveRewardShowMoneyCount);
+                            if (giveRewardResult.getCode().equals(CommonStateCode.SUCCESS) && giveRewardResult.getData() != null) {
+                                long giveRewardShowMoneyCount = giveRewardResult.getData();
+                                giveRewardShowMoneyTotalCount += giveRewardShowMoneyCount;
+                                actorGiveRewardMap.put(actorId, giveRewardShowMoneyCount);
+                            }
                         }
                     }
+
+                    // 更新当前赛季奖励状态为已结算待发放
+                    ConfLadderMatch record = new ConfLadderMatch();
+                    record.setSeasonId(seasonId);
+                    record.setUpdateTime(DateUtils.getCurrentDate());
+                    record.setGiveReward(GiveRewardStatusEnum.WAIT_GIVE_REWARD);
+                    confLadderMatchMapper.updateByPrimaryKey(record);
+
+                    // 发送邮件通知相关人员发放奖励情况
+                    sendGiveRewardEmail(seasonId, seasonName, giveRewardShowMoneyTotalCount, actorGiveRewardMap);
                 }
-
-                // 更新当前赛季奖励状态为已结算待发放
-                ConfLadderMatch record = new ConfLadderMatch();
-                record.setSeasonId(seasonId);
-                record.setUpdateTime(DateUtils.getCurrentDate());
-                record.setGiveReward(GiveRewardStatusEnum.WAIT_GIVE_REWARD);
-                confLadderMatchMapper.updateByPrimaryKey(record);
-
-                // 发送邮件通知相关人员发放奖励情况
-                sendGiveRewardEmail(seasonId, seasonName, giveRewardShowMoneyTotalCount, actorGiveRewardMap);
             }
+        }else {
+            return new Result(CommonStateCode.FAIL, "给本赛季所有主播发放奖励正在进行中");
         }
+
         return new Result(CommonStateCode.SUCCESS, "给本赛季所有主播发放奖励成功", true);
     }
 
@@ -299,6 +331,37 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
             return new Result(CommonStateCode.FAIL, "获取不到当前赛季信息 发放奖励失败");
         }
         return new Result(CommonStateCode.SUCCESS, "给本赛季所有主播发放奖励成功", true);
+    }
+
+    @Override
+    public Result<List<ResActorLadderMatchDO>> getLastSeasonStrongestKingTop5() {
+
+        List<ResActorLadderMatchDO> resActorLadderMatchDOS = Lists.newArrayList();
+        Integer currentSeasonId = nationalPKRelationSource.getCurrentSeasonId();
+
+        if(currentSeasonId != null) {
+
+            int lastSeasonId = currentSeasonId - 1;
+            List<ResActorLadderMatch> resActorLadderMatches = resActorLadderMatchMapper.getList(lastSeasonId, 5, 0);
+            if(resActorLadderMatches != null) {
+
+                for (int i = 0; i < resActorLadderMatches.size(); i++) {
+
+                    ResActorLadderMatchDO resActorLadderMatchDO = BeanMapper.map(resActorLadderMatches.get(i), ResActorLadderMatchDO.class);
+
+                    // 设置游戏段位名称
+                    int gameDan = resActorLadderMatchDO.getGameDan();
+                    resActorLadderMatchDO.setGameDanName(GameDanEnum.parseId(gameDan).getValue());
+
+                    // 设置主播排名
+                    int ranking = i + 1;
+                    resActorLadderMatchDO.setRanking(ranking);
+
+                    resActorLadderMatchDOS.add(resActorLadderMatchDO);
+                }
+            }
+        }
+        return new Result(CommonStateCode.SUCCESS, "获取天梯榜成功", resActorLadderMatchDOS);
     }
 
     private void sendGiveRewardEmail(int seasonId, String seasonName, Long giveRewardShowMoneyTotalCount, Map<Integer, Long> actorGiveRewardMap) {
@@ -427,7 +490,7 @@ public class ResActorLadderMatchServiceImpl implements ResActorLadderMatchServic
     private int getMedalId(int gameDan) {
 
         int medalId = 0;
-        if(gameDan == GameDanEnum.STUBBORN_BRONZE.getId()) {
+        if(gameDan == STUBBORN_BRONZE.getId()) {
 
             medalId = configService.getStubbornBronzeMedalId();
         } else if(gameDan == GameDanEnum.HEROIC_SILVER.getId()) {
