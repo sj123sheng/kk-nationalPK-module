@@ -30,6 +30,12 @@ public class ConfLadderMatchServiceImplTest {
     @RpcConsumer(version="1.0.0")
     ConfLadderMatchService confLadderMatchService;
 
+    @Test
+    public void getCurrentSeasonConf() {
+
+        Result<ConfLadderMatchDO> result = confLadderMatchService.getCurrentSeasonConf();
+        System.out.println(new Gson().toJson(result));
+    }
 
     @Test
     public void getConfLadderMatchList() {
