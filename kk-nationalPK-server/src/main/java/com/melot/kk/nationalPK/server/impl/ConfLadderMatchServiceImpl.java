@@ -199,9 +199,15 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
 
         // 如果缓存中当前赛季id为空 从数据库获取当前赛季id
         if(currentSeasonId == null) {
+
             ConfLadderMatch confLadderMatch = confLadderMatchMapper.getOngoingSeason(DateUtils.getCurrentDate());
             if(confLadderMatch != null) {
                 currentSeasonId = confLadderMatch.getSeasonId();
+                long bonusPool = resActorLadderMatchMapper.getBonusPoolShowMoneyCount(currentSeasonId);
+                int bonusPoolMultiple= confLadderMatch.getBonusPoolMultiple();
+                bonusPool = (long) (bonusPool * 0.015 * bonusPoolMultiple / 100);
+
+                nationalPKRelationSource.setCurrentSeason(currentSeasonId, bonusPool);
             }
         }
 
@@ -230,12 +236,12 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
 
         if(confLadderMatch != null) {
 
-            int seasonId = confLadderMatch.getSeasonId();
-            long bonusPool = resActorLadderMatchMapper.getBonusPoolShowMoneyCount(seasonId);
+            int currentSeasonId = confLadderMatch.getSeasonId();
+            long bonusPool = resActorLadderMatchMapper.getBonusPoolShowMoneyCount(currentSeasonId);
             int bonusPoolMultiple= confLadderMatch.getBonusPoolMultiple();
             bonusPool = (long) (bonusPool * 0.015 * bonusPoolMultiple / 100);
 
-            nationalPKRelationSource.setCurrentSeason(seasonId, bonusPool);
+            nationalPKRelationSource.setCurrentSeason(currentSeasonId, bonusPool);
         }
         return new Result(CommonStateCode.SUCCESS, "设置当前赛季配置信息成功", true);
     }
