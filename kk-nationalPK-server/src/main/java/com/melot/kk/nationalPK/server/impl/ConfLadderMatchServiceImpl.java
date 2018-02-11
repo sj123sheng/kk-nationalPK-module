@@ -197,6 +197,14 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
         ConfLadderMatchDO confLadderMatchDO;
         Integer currentSeasonId = nationalPKRelationSource.getCurrentSeasonId();
 
+        // 如果缓存中当前赛季id为空 从数据库获取当前赛季id
+        if(currentSeasonId == null) {
+            ConfLadderMatch confLadderMatch = confLadderMatchMapper.getOngoingSeason(DateUtils.getCurrentDate());
+            if(confLadderMatch != null) {
+                currentSeasonId = confLadderMatch.getSeasonId();
+            }
+        }
+
         // 如果当前赛季id不为空
         if(currentSeasonId != null) {
 
