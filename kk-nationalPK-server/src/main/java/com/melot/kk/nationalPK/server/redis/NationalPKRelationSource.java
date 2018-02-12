@@ -34,8 +34,6 @@ public class NationalPKRelationSource {
 
     @Autowired
 	@Qualifier("kkapicache")
-	private HAShardedJedisWrapper nationalPKRelationJedis;
-	
 	private HAShardedJedisWrapper jedisProxy;
 
     private HAShardedJedisWrapper.HashMap jedisHashMap;
@@ -46,7 +44,6 @@ public class NationalPKRelationSource {
 	@PostConstruct
 	private void init() {
 		try {
-			jedisProxy = nationalPKRelationJedis;
             jedisHashMap = jedisProxy.HASH;
 		} catch (Exception e) {
             logger.error("jedisProxy初始化失败", e);
