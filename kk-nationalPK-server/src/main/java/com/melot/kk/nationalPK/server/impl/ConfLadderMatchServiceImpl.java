@@ -17,6 +17,7 @@ import com.melot.kktv.util.DateUtils;
 import com.melot.kktv.util.StringUtil;
 import com.melot.module.kkrpc.annotation.RpcService;
 import com.site.lookup.util.StringUtils;
+import io.shardingjdbc.aop.anotation.RdbMasterSlave;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,7 @@ public class ConfLadderMatchServiceImpl implements ConfLadderMatchService {
     @Autowired
     private NationalPKRelationSource nationalPKRelationSource;
 
+    @RdbMasterSlave(toMaster = true)
     @Override
     public Result<Boolean> addConfLadderMatch(String seasonName, Date startTime, Date endTime, int bonusPoolMultiple) {
 
