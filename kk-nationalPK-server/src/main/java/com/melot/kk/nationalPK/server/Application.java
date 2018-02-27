@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ImportResource;
 
 @MapperScan(basePackages = {"com.melot.kk.nationalPK.server.dao"},
-        sqlSessionFactoryRef = "sqlSessionFactory_kkcx")
+        sqlSessionFactoryRef = "sqlSessionFactory_masterPg")
 @ImportResource(locations={"classpath*:conf/disconf.xml"})
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class})
 public class Application {
